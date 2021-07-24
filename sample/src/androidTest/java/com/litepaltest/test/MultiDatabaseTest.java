@@ -9,9 +9,9 @@ import com.litepaltest.model.Headset;
 import com.litepaltest.model.Product;
 
 import org.junit.Test;
-import org.litepal.LitePal;
-import org.litepal.LitePalDB;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.LitePalCopy;
+import org.litepal.copy.LitePalDB;
+import org.litepal.copy.util.DBUtility;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -25,8 +25,8 @@ public class MultiDatabaseTest extends LitePalTestCase {
 
     @Test
     public void testMultiDatabase() {
-        LitePal.deleteDatabase("db2");
-        SQLiteDatabase db = LitePal.getDatabase();
+        LitePalCopy.deleteDatabase("db2");
+        SQLiteDatabase db = LitePalCopy.getDatabase();
         assertTrue(DBUtility.isTableExists("Album", db));
         assertTrue(DBUtility.isTableExists("Song", db));
         assertTrue(DBUtility.isTableExists("Singer", db));
@@ -46,8 +46,8 @@ public class MultiDatabaseTest extends LitePalTestCase {
         litePalDB.addClassName(Classroom.class.getName());
         litePalDB.addClassName(Product.class.getName());
         litePalDB.setExternalStorage(true);
-        LitePal.use(litePalDB);
-        db = LitePal.getDatabase();
+        LitePalCopy.use(litePalDB);
+        db = LitePalCopy.getDatabase();
         assertFalse(DBUtility.isTableExists("Album", db));
         assertFalse(DBUtility.isTableExists("Song", db));
         assertFalse(DBUtility.isTableExists("Singer", db));
@@ -68,8 +68,8 @@ public class MultiDatabaseTest extends LitePalTestCase {
         litePalDB.addClassName(Product.class.getName());
         litePalDB.addClassName(Headset.class.getName());
         litePalDB.setExternalStorage(true);
-        LitePal.use(litePalDB);
-        db = LitePal.getDatabase();
+        LitePalCopy.use(litePalDB);
+        db = LitePalCopy.getDatabase();
         assertFalse(DBUtility.isTableExists("Album", db));
         assertFalse(DBUtility.isTableExists("Song", db));
         assertFalse(DBUtility.isTableExists("Singer", db));
@@ -85,8 +85,8 @@ public class MultiDatabaseTest extends LitePalTestCase {
         assertFalse(DBUtility.isTableExists("WeChatMessage", db));
         assertFalse(DBUtility.isTableExists("WeiboMessage", db));
 
-        LitePal.useDefault();
-        db = LitePal.getDatabase();
+        LitePalCopy.useDefault();
+        db = LitePalCopy.getDatabase();
         assertTrue(DBUtility.isTableExists("Album", db));
         assertTrue(DBUtility.isTableExists("Song", db));
         assertTrue(DBUtility.isTableExists("Singer", db));

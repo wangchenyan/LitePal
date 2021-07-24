@@ -8,13 +8,13 @@ import com.litepaltest.test.LitePalTestCase
 import junit.framework.TestCase.*
 import org.junit.Before
 import org.junit.Test
-import org.litepal.LitePal
-import org.litepal.exceptions.DataSupportException
-import org.litepal.extension.find
-import org.litepal.extension.update
-import org.litepal.extension.updateAll
-import org.litepal.tablemanager.Connector
-import org.litepal.util.DBUtility
+import org.litepal.copy.LitePalCopy
+import org.litepal.copy.exceptions.DataSupportException
+import org.litepal.copy.extension.find
+import org.litepal.copy.extension.update
+import org.litepal.copy.extension.updateAll
+import org.litepal.copy.tablemanager.Connector
+import org.litepal.copy.util.DBUtility
 import java.util.*
 
 @SmallTest
@@ -62,12 +62,12 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
     fun testUpdateWithStaticUpdate() {
         val values = ContentValues()
         values.put("TEACHERNAME", "Toy")
-        var rowsAffected = LitePal.update<Teacher>(values, teacher!!.id.toLong())
+        var rowsAffected = LitePalCopy.update<Teacher>(values, teacher!!.id.toLong())
         assertEquals(1, rowsAffected)
         assertEquals("Toy", getTeacher(teacher!!.id.toLong())!!.teacherName)
         values.clear()
         values.put("aGe", 15)
-        rowsAffected = LitePal.update<Student>(values, student!!.id.toLong())
+        rowsAffected = LitePalCopy.update<Student>(values, student!!.id.toLong())
         assertEquals(1, rowsAffected)
         assertEquals(15, getStudent(student!!.id.toLong())!!.age)
     }
@@ -77,7 +77,7 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         val values = ContentValues()
         values.put("TEACHERNAME", "Toy")
         try {
-            LitePal.update<Any>(values, teacher!!.id.toLong())
+            LitePalCopy.update<Any>(values, teacher!!.id.toLong())
         } catch (e: SQLiteException) {
         }
 
@@ -88,7 +88,7 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         val values = ContentValues()
         values.put("TEACHERYEARS", 13)
         try {
-            LitePal.update(Teacher::class.java, values, teacher!!.id.toLong())
+            LitePalCopy.update(Teacher::class.java, values, teacher!!.id.toLong())
             fail("no such column: TEACHERYEARS")
         } catch (e: SQLiteException) {
         }
@@ -99,7 +99,7 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
     fun testUpdateWithStaticUpdateButNotExistsRecord() {
         val values = ContentValues()
         values.put("TEACHERNAME", "Toy")
-        val rowsAffected = LitePal.update(Teacher::class.java, values, 998909)
+        val rowsAffected = LitePalCopy.update(Teacher::class.java, values, 998909)
         assertEquals(0, rowsAffected)
     }
 
@@ -150,7 +150,7 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         s.setToDefault("birthday")
         val affectedStudent = s.update(student!!.id.toLong())
         assertEquals(1, affectedStudent)
-        val newStudent = LitePal.find<Student>(student!!.id.toLong())
+        val newStudent = LitePalCopy.find<Student>(student!!.id.toLong())
         assertNull(newStudent!!.birthday)
         assertNull(newStudent.name)
         assertEquals(0, newStudent.age)
@@ -218,14 +218,14 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         }
         val values = ContentValues()
         values.put("age", 24)
-        var affectedRows = LitePal.updateAll<Student>(values, "name = ? and age = ?",
+        var affectedRows = LitePalCopy.updateAll<Student>(values, "name = ? and age = ?",
                 "Dusting", "13")
         assertEquals(1, affectedRows)
         val updatedStu = getStudent(ids[3].toLong())
         assertEquals(24, updatedStu!!.age)
         values.clear()
         values.put("name", "Dustee")
-        affectedRows = LitePal.updateAll<Student>(values, "name = ?", "Dusting")
+        affectedRows = LitePalCopy.updateAll<Student>(values, "name = ?", "Dusting")
         assertEquals(5, affectedRows)
         val students = getStudents(ids)
         for (updatedStudent in students) {
@@ -238,13 +238,13 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         var allRows = getRowsCount(studentTable)
         val values = ContentValues()
         values.put("name", "Zuckerburg")
-        var affectedRows = LitePal.updateAll<Student>(values)
+        var affectedRows = LitePalCopy.updateAll<Student>(values)
         assertEquals(allRows, affectedRows)
         val table = DBUtility.getIntermediateTableName(studentTable, DBUtility.getTableNameByClassName(Teacher::class.java.name))
         allRows = getRowsCount(table)
         values.clear()
         values.putNull(studentTable!! + "_id")
-        affectedRows = LitePal.updateAll(table, values)
+        affectedRows = LitePalCopy.updateAll(table, values)
         assertEquals(allRows, affectedRows)
     }
 
@@ -253,21 +253,21 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         val values = ContentValues()
         values.put("name", "Dustee")
         try {
-            LitePal.updateAll<Student>(values, "name = 'Dustin'", "aaa")
+            LitePalCopy.updateAll<Student>(values, "name = 'Dustin'", "aaa")
             fail()
         } catch (e: DataSupportException) {
             assertEquals("The parameters in conditions are incorrect.", e.message)
         }
 
         try {
-            LitePal.updateAll<Student>(values, null, null)
+            LitePalCopy.updateAll<Student>(values, null, null)
             fail()
         } catch (e: DataSupportException) {
             assertEquals("The parameters in conditions are incorrect.", e.message)
         }
 
         try {
-            LitePal.updateAll<Student>(values, "address = ?", "HK")
+            LitePalCopy.updateAll<Student>(values, "address = ?", "HK")
             fail()
         } catch (e: SQLiteException) {
         }
@@ -291,7 +291,7 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         toUpdate.birthday = date
         var affectedRows = toUpdate.updateAll("name = ? and age = ?", "Jessica", "13")
         assertEquals(1, affectedRows)
-        val updatedStu = LitePal.find(Student::class.java, ids[3].toLong())
+        val updatedStu = LitePalCopy.find(Student::class.java, ids[3].toLong())
         assertEquals(24, updatedStu!!.age)
         assertEquals(date.time, updatedStu.birthday.time)
         toUpdate.age = 18
@@ -416,7 +416,7 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         c.news.add("news")
         c.news.add("paper")
         c.update(classroom!!._id.toLong())
-        var result = LitePal.find<Classroom>(classroom!!._id.toLong())
+        var result = LitePalCopy.find<Classroom>(classroom!!._id.toLong())
         assertEquals("Math room", result!!.name)
         val builder = StringBuilder()
         for (s in result.news) {
@@ -427,7 +427,7 @@ class UpdateUsingUpdateMethodKotlinTest : LitePalTestCase() {
         val c2 = Classroom()
         c2.setToDefault("numbers")
         c2.update(classroom!!._id.toLong())
-        result = LitePal.find<Classroom>(classroom!!._id.toLong())
+        result = LitePalCopy.find<Classroom>(classroom!!._id.toLong())
         assertEquals("Math room", result!!.name)
         assertEquals(2, result.news.size)
         assertEquals(0, result.numbers.size)

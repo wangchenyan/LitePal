@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
-import org.litepal.crud.LitePalSupport;
+import org.litepal.copy.crud.LitePalSupport;
 
 import com.litepaltest.model.Student;
 import com.litepaltest.model.Teacher;

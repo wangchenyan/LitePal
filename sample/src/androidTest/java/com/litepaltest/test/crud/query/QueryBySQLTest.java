@@ -7,9 +7,9 @@ import com.litepaltest.model.Book;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.litepal.LitePal;
-import org.litepal.exceptions.DataSupportException;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.LitePalCopy;
+import org.litepal.copy.exceptions.DataSupportException;
+import org.litepal.copy.util.DBUtility;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
@@ -34,14 +34,14 @@ public class QueryBySQLTest {
 
 	@Test
 	public void testQueryBySQL() {
-		Cursor cursor = LitePal.findBySQL("select * from " + bookTable);
+		Cursor cursor = LitePalCopy.findBySQL("select * from " + bookTable);
 		assertTrue(cursor.getCount() > 0);
 		cursor.close();
 	}
 
     @Test
 	public void testQueryBySQLWithPlaceHolder() {
-		Cursor cursor = LitePal.findBySQL(
+		Cursor cursor = LitePalCopy.findBySQL(
 				"select * from " + bookTable + " where id=? and bookname=? and pages=?",
 				String.valueOf(book.getId()), "数据库", "300");
 		assertEquals(1, cursor.getCount());
@@ -56,15 +56,15 @@ public class QueryBySQLTest {
     @Test
 	public void testQueryBySQLWithWrongParams() {
 		try {
-            LitePal.findBySQL("select * from " + bookTable + " where id=? and bookname=? and pages=?",
+            LitePalCopy.findBySQL("select * from " + bookTable + " where id=? and bookname=? and pages=?",
 					String.valueOf(book.getId()), "数据库");
 			fail();
 		} catch (DataSupportException e) {
 			assertEquals("The parameters in conditions are incorrect.", e.getMessage());
 		}
-		Cursor cursor = LitePal.findBySQL();
+		Cursor cursor = LitePalCopy.findBySQL();
 		assertNull(cursor);
-		cursor = LitePal.findBySQL();
+		cursor = LitePalCopy.findBySQL();
 		assertNull(cursor);
 	}
 

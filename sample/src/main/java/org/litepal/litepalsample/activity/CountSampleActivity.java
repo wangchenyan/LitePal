@@ -26,7 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 import org.litepal.litepalsample.R;
 import org.litepal.litepalsample.model.Singer;
 
@@ -58,12 +58,12 @@ public class CountSampleActivity extends AppCompatActivity implements OnClickLis
 		int result = 0;
 		switch (view.getId()) {
 		case R.id.count_btn1:
-			result = LitePal.count(Singer.class);
+			result = LitePalCopy.count(Singer.class);
 			mResultText.setText(String.valueOf(result));
 			break;
 		case R.id.count_btn2:
 			try {
-				result = LitePal.where("age > ?", mAgeEdit.getText().toString()).count(
+				result = LitePalCopy.where("age > ?", mAgeEdit.getText().toString()).count(
 						Singer.class);
 				mResultText.setText(String.valueOf(result));
 			} catch (Exception e) {

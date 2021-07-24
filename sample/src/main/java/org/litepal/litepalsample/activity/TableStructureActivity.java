@@ -29,10 +29,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.litepal.litepalsample.R;
-import org.litepal.tablemanager.Connector;
-import org.litepal.tablemanager.model.ColumnModel;
-import org.litepal.tablemanager.model.TableModel;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.tablemanager.Connector;
+import org.litepal.copy.tablemanager.model.ColumnModel;
+import org.litepal.copy.tablemanager.model.TableModel;
+import org.litepal.copy.util.DBUtility;
 
 import java.util.ArrayList;
 import java.util.Collection;

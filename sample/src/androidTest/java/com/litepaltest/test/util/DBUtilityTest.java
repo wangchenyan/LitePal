@@ -10,8 +10,8 @@ import com.litepaltest.test.LitePalTestCase;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.litepal.tablemanager.Connector;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.tablemanager.Connector;
+import org.litepal.copy.util.DBUtility;
 
 import java.util.Set;
 

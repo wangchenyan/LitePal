@@ -1,6 +1,6 @@
 package com.litepaltest.model;
 
-import org.litepal.crud.LitePalSupport;
+import org.litepal.copy.crud.LitePalSupport;
 
 import java.util.ArrayList;
 import java.util.HashSet;

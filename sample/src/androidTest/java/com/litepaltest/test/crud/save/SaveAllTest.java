@@ -11,8 +11,8 @@ import com.litepaltest.model.Teacher;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.litepal.LitePal;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.LitePalCopy;
+import org.litepal.copy.util.DBUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class SaveAllTest {
             cellPhone.setSerial(UUID.randomUUID().toString());
 			cellList.add(cellPhone);
 		}
-		assertTrue(LitePal.saveAll(cellList));
+		assertTrue(LitePalCopy.saveAll(cellList));
 		for (Cellphone cell : cellList) {
 			assertTrue(cell.isSaved());
 		}
@@ -62,9 +62,9 @@ public class SaveAllTest {
 			student.setAge(new Random().nextInt(20));
 			classroom.getStudentCollection().add(student);
 		}
-		assertTrue(LitePal.saveAll(classroom.getStudentCollection()));
+		assertTrue(LitePalCopy.saveAll(classroom.getStudentCollection()));
 		classroom.save();
-		List<Student> list = LitePal.where(classroomTable + "_id = ?",
+		List<Student> list = LitePalCopy.where(classroomTable + "_id = ?",
 				String.valueOf(classroom.get_id())).find(Student.class);
 		assertEquals(50, list.size());
 
@@ -82,9 +82,9 @@ public class SaveAllTest {
 			student.setClassroom(classroom);
 			studentList.add(student);
 		}
-		assertTrue(LitePal.saveAll(studentList));
+		assertTrue(LitePalCopy.saveAll(studentList));
 		classroom.save();
-		List<Student> list = LitePal.where(classroomTable + "_id = ?",
+		List<Student> list = LitePalCopy.where(classroomTable + "_id = ?",
 				String.valueOf(classroom.get_id())).find(Student.class);
 		assertEquals(50, list.size());
 	}
@@ -103,10 +103,10 @@ public class SaveAllTest {
 			idcardList.add(idcard);
 			studentList.add(student);
 		}
-		assertTrue(LitePal.saveAll(idcardList));
-		assertTrue(LitePal.saveAll(studentList));
+		assertTrue(LitePalCopy.saveAll(idcardList));
+		assertTrue(LitePalCopy.saveAll(studentList));
 		for (Student student : studentList) {
-			List<IdCard> result = LitePal
+			List<IdCard> result = LitePalCopy
 					.where(studentTable + "_id=?", String.valueOf(student.getId())).find(IdCard.class);
 			assertEquals(1, result.size());
 		}
@@ -140,13 +140,13 @@ public class SaveAllTest {
 			student.getTeachers().add(teacherList.get(index3));
 			studentList.add(student);
 		}
-		assertTrue(LitePal.saveAll(studentList));
-		assertTrue(LitePal.saveAll(teacherList));
+		assertTrue(LitePalCopy.saveAll(studentList));
+		assertTrue(LitePalCopy.saveAll(teacherList));
         String studentTable = DBUtility.getTableNameByClassName(Student.class.getName());
         String teacherTable = DBUtility.getTableNameByClassName(Teacher.class.getName());
         String tableName = DBUtility.getIntermediateTableName(studentTable, teacherTable);
         for (Student student : studentList) {
-			Cursor cursor = LitePal.findBySQL(
+			Cursor cursor = LitePalCopy.findBySQL(
 					"select * from " + tableName + " where " + studentTable + "_id=?",
 					String.valueOf(student.getId()));
 			assertEquals(3, cursor.getCount());
@@ -168,11 +168,11 @@ public class SaveAllTest {
             }
             classroomList.add(classroom);
         }
-		assertTrue(LitePal.saveAll(classroomList));
+		assertTrue(LitePalCopy.saveAll(classroomList));
         assertEquals(50, classroomList.size());
         for (Classroom classroom : classroomList) {
             assertTrue(classroom.isSaved());
-            Classroom c = LitePal.find(Classroom.class, classroom.get_id());
+            Classroom c = LitePalCopy.find(Classroom.class, classroom.get_id());
             assertTrue(c.getName().startsWith("classroom"));
             assertEquals(20, c.getNews().size());
             assertEquals(13, c.getNumbers().size());
@@ -189,8 +189,8 @@ public class SaveAllTest {
 			cellphone.setSerial(serial + (i % 10)); // serial is unique, so this should save failed
 			cellphones.add(cellphone);
 		}
-		assertFalse(LitePal.saveAll(cellphones));
-		List<Cellphone> list = LitePal.where("serial like ?", serial + "%").find(Cellphone.class);
+		assertFalse(LitePalCopy.saveAll(cellphones));
+		List<Cellphone> list = LitePalCopy.where("serial like ?", serial + "%").find(Cellphone.class);
 		assertTrue(list.isEmpty());
 	}
 

@@ -1,6 +1,6 @@
 package com.litepaltest.model;
 
-import org.litepal.annotation.Column;
+import org.litepal.copy.annotation.Column;
 
 public class WeiboMessage extends Message {
 

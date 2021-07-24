@@ -26,7 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 import org.litepal.litepalsample.R;
 import org.litepal.litepalsample.model.Singer;
 
@@ -58,12 +58,12 @@ public class MinSampleActivity extends AppCompatActivity implements OnClickListe
 		int result = 0;
 		switch (view.getId()) {
 		case R.id.min_btn1:
-			result = LitePal.min(Singer.class, "age", Integer.TYPE);
+			result = LitePalCopy.min(Singer.class, "age", Integer.TYPE);
 			mResultText.setText(String.valueOf(result));
 			break;
 		case R.id.min_btn2:
 			try {
-				result = LitePal.where("age > ?", mAgeEdit.getText().toString()).min(
+				result = LitePalCopy.where("age > ?", mAgeEdit.getText().toString()).min(
 						Singer.class, "age", Integer.TYPE);
 				mResultText.setText(String.valueOf(result));
 			} catch (Exception e) {

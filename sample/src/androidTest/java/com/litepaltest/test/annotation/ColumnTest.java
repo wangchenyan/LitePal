@@ -7,7 +7,7 @@ import com.litepaltest.test.LitePalTestCase;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public class ColumnTest extends LitePalTestCase {
 
     @Before
     public void setUp() {
-        LitePal.getDatabase();
+        LitePalCopy.getDatabase();
     }
 
     @Test
@@ -62,10 +62,10 @@ public class ColumnTest extends LitePalTestCase {
         cellphone.setPrice(1949.99);
         cellphone.setSerial(UUID.randomUUID().toString());
         assertTrue(cellphone.save());
-        assertEquals("0.0.0.0", LitePal.find(Cellphone.class, cellphone.getId()).getMac());
+        assertEquals("0.0.0.0", LitePalCopy.find(Cellphone.class, cellphone.getId()).getMac());
         cellphone.setMac("192.168.0.1");
         assertTrue(cellphone.save());
-        assertEquals("192.168.0.1", LitePal.find(Cellphone.class, cellphone.getId()).getMac());
+        assertEquals("192.168.0.1", LitePalCopy.find(Cellphone.class, cellphone.getId()).getMac());
     }
 
 }

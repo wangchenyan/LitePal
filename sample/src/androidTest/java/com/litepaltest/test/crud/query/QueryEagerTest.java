@@ -9,7 +9,7 @@ import com.litepaltest.model.Teacher;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 
 import java.util.Calendar;
 import java.util.List;
@@ -85,7 +85,7 @@ public class QueryEagerTest {
 
     @Test
 	public void testEagerFind() {
-		Student s1 = LitePal.find(Student.class, student1.getId(), true);
+		Student s1 = LitePalCopy.find(Student.class, student1.getId(), true);
 		Classroom c = s1.getClassroom();
 		IdCard ic = s1.getIdcard();
 		List<Teacher> tList = s1.getTeachers();
@@ -114,12 +114,12 @@ public class QueryEagerTest {
 			}
 			fail();
 		}
-		s1 = LitePal.find(Student.class, student1.getId());
+		s1 = LitePalCopy.find(Student.class, student1.getId());
 		c = s1.getClassroom();
 		assertNull(c);
 		assertNull(s1.getIdcard());
 		assertEquals(0, s1.getTeachers().size());
-		c = LitePal.find(Classroom.class, classroom.get_id(), true);
+		c = LitePalCopy.find(Classroom.class, classroom.get_id(), true);
 		assertEquals(2, c.getStudentCollection().size());
 		assertEquals(1, c.getTeachers().size());
 		for (Student s : c.getStudentCollection()) {
@@ -136,7 +136,7 @@ public class QueryEagerTest {
 			}
 			fail();
 		}
-		Teacher t1 = LitePal.find(Teacher.class, teacher2.getId(), true);
+		Teacher t1 = LitePalCopy.find(Teacher.class, teacher2.getId(), true);
 		List<Student> sList = t1.getStudents();
 		assertEquals(teacher2.getStudents().size(), sList.size());
 		for (Student s : sList) {
@@ -153,45 +153,45 @@ public class QueryEagerTest {
 			}
 			fail();
 		}
-		Student s3 = LitePal.find(Student.class, student3.getId());
+		Student s3 = LitePalCopy.find(Student.class, student3.getId());
 		assertNull(s3.getBirthday());
 	}
 
 	public void resetData() {
-        LitePal.deleteAll(Student.class);
-        LitePal.deleteAll(Classroom.class);
-        LitePal.deleteAll(Teacher.class);
-        LitePal.deleteAll(IdCard.class);
+        LitePalCopy.deleteAll(Student.class);
+        LitePalCopy.deleteAll(Classroom.class);
+        LitePalCopy.deleteAll(Teacher.class);
+        LitePalCopy.deleteAll(IdCard.class);
 		setUp();
 	}
 
     @Test
 	public void testEagerFindFirst() {
 		resetData();
-		Student s1 = LitePal.findFirst(Student.class);
+		Student s1 = LitePalCopy.findFirst(Student.class);
 		assertNull(s1.getClassroom());
-		s1 = LitePal.findFirst(Student.class, true);
+		s1 = LitePalCopy.findFirst(Student.class, true);
 		assertNotNull(s1);
 	}
 
     @Test
 	public void testEagerFindLast() {
 		resetData();
-		Teacher t1 = LitePal.findLast(Teacher.class);
+		Teacher t1 = LitePalCopy.findLast(Teacher.class);
 		assertEquals(0, t1.getStudents().size());
-		t1 = LitePal.findLast(Teacher.class, true);
+		t1 = LitePalCopy.findLast(Teacher.class, true);
 		assertTrue(0 < t1.getStudents().size());
 	}
 
     @Test
 	public void testEagerFindAll() {
 		resetData();
-		List<Student> sList = LitePal.findAll(Student.class);
+		List<Student> sList = LitePalCopy.findAll(Student.class);
 		for (Student s : sList) {
 			assertNull(s.getClassroom());
 			assertEquals(0, s.getTeachers().size());
 		}
-		sList = LitePal.findAll(Student.class, true);
+		sList = LitePalCopy.findAll(Student.class, true);
 		for (Student s : sList) {
 			if (s.getClassroom() == null) {
 				continue;
@@ -219,12 +219,12 @@ public class QueryEagerTest {
     @Test
 	public void testEagerClusterQuery() {
 		resetData();
-		List<Student> sList = LitePal.where("id = ?", String.valueOf(student1.getId())).find(
+		List<Student> sList = LitePalCopy.where("id = ?", String.valueOf(student1.getId())).find(
 				Student.class);
 		assertEquals(1, sList.size());
 		Student s = sList.get(0);
 		assertNull(s.getClassroom());
-		sList = LitePal.where("id = ?", String.valueOf(student1.getId())).find(Student.class, true);
+		sList = LitePalCopy.where("id = ?", String.valueOf(student1.getId())).find(Student.class, true);
 		assertEquals(1, sList.size());
 		s = sList.get(0);
 		assertNotNull(s.getClassroom());

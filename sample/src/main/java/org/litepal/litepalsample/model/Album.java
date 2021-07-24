@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.litepal.crud.LitePalSupport;
+import org.litepal.copy.crud.LitePalSupport;
 
 public class Album extends LitePalSupport {
 

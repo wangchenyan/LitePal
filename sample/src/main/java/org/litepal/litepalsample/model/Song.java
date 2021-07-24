@@ -16,8 +16,8 @@
 
 package org.litepal.litepalsample.model;
 
-import org.litepal.annotation.Column;
-import org.litepal.crud.LitePalSupport;
+import org.litepal.copy.annotation.Column;
+import org.litepal.copy.crud.LitePalSupport;
 
 public class Song extends LitePalSupport {
 

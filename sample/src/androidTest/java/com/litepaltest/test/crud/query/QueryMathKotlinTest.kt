@@ -6,9 +6,9 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.fail
 import org.junit.Before
 import org.junit.Test
-import org.litepal.LitePal
-import org.litepal.extension.*
-import org.litepal.util.DBUtility
+import org.litepal.copy.LitePalCopy
+import org.litepal.copy.extension.*
+import org.litepal.copy.util.DBUtility
 
 @SmallTest
 class QueryMathKotlinTest {
@@ -22,23 +22,23 @@ class QueryMathKotlinTest {
 
     @Test
     fun testCount() {
-        var result = LitePal.count<Student>()
+        var result = LitePalCopy.count<Student>()
         var realResult = -100
-        var cursor = LitePal.findBySQL("select count(1) from " + studentTable!!)
+        var cursor = LitePalCopy.findBySQL("select count(1) from " + studentTable!!)
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }
         cursor.close()
         assertEquals(realResult, result)
-        result = LitePal.where("id > ?", "99").count(studentTable)
-        cursor = LitePal.findBySQL("select count(1) from $studentTable where id > ?", "99")
+        result = LitePalCopy.where("id > ?", "99").count(studentTable)
+        cursor = LitePalCopy.findBySQL("select count(1) from $studentTable where id > ?", "99")
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }
         cursor.close()
         assertEquals(realResult, result)
         try {
-            LitePal.count("nosuchtable")
+            LitePalCopy.count("nosuchtable")
             fail()
         } catch (e: Exception) {
         }
@@ -47,23 +47,23 @@ class QueryMathKotlinTest {
 
     @Test
     fun testAverage() {
-        var result = LitePal.average<Student>("age")
+        var result = LitePalCopy.average<Student>("age")
         var realResult = -100.0
-        var cursor = LitePal.findBySQL("select avg(age) from " + studentTable!!)
+        var cursor = LitePalCopy.findBySQL("select avg(age) from " + studentTable!!)
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getDouble(0)
         }
         cursor.close()
         assertEquals(realResult, result)
-        result = LitePal.where("id > ?", "99").average(studentTable, "age")
-        cursor = LitePal.findBySQL("select avg(age) from $studentTable where id > ?", "99")
+        result = LitePalCopy.where("id > ?", "99").average(studentTable, "age")
+        cursor = LitePalCopy.findBySQL("select avg(age) from $studentTable where id > ?", "99")
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getDouble(0)
         }
         cursor.close()
         assertEquals(realResult, result)
         try {
-            LitePal.average<Student>("nosuchcolumn")
+            LitePalCopy.average<Student>("nosuchcolumn")
             fail()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -73,16 +73,16 @@ class QueryMathKotlinTest {
 
     @Test
     fun testMax() {
-        var result = LitePal.max<Student, Int>("age")
+        var result = LitePalCopy.max<Student, Int>("age")
         var realResult = -100
-        var cursor = LitePal.findBySQL("select max(age) from " + studentTable!!)
+        var cursor = LitePalCopy.findBySQL("select max(age) from " + studentTable!!)
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }
         cursor.close()
         assertEquals(realResult, result)
-        result = LitePal.where("age < ?", "20").max(studentTable!!, "age")
-        cursor = LitePal.findBySQL("select max(age) from $studentTable where age < ?", "20")
+        result = LitePalCopy.where("age < ?", "20").max(studentTable!!, "age")
+        cursor = LitePalCopy.findBySQL("select max(age) from $studentTable where age < ?", "20")
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }
@@ -92,16 +92,16 @@ class QueryMathKotlinTest {
 
     @Test
     fun testMin() {
-        var result = LitePal.min<Student, Int>("age")
+        var result = LitePalCopy.min<Student, Int>("age")
         var realResult = -100
-        var cursor = LitePal.findBySQL("select min(age) from " + studentTable!!)
+        var cursor = LitePalCopy.findBySQL("select min(age) from " + studentTable!!)
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }
         cursor.close()
         assertEquals(realResult, result)
-        result = LitePal.where("age > ?", "10").min(studentTable!!, "age")
-        cursor = LitePal.findBySQL("select min(age) from $studentTable where age > ?", "10")
+        result = LitePalCopy.where("age > ?", "10").min(studentTable!!, "age")
+        cursor = LitePalCopy.findBySQL("select min(age) from $studentTable where age > ?", "10")
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }
@@ -111,16 +111,16 @@ class QueryMathKotlinTest {
 
     @Test
     fun testSum() {
-        var result = LitePal.sum<Student, Int>("age")
+        var result = LitePalCopy.sum<Student, Int>("age")
         var realResult = -100
-        var cursor = LitePal.findBySQL("select sum(age) from " + studentTable!!)
+        var cursor = LitePalCopy.findBySQL("select sum(age) from " + studentTable!!)
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }
         cursor.close()
         assertEquals(realResult, result)
-        result = LitePal.where("age > ?", "15").sum(studentTable!!, "age")
-        cursor = LitePal.findBySQL("select sum(age) from $studentTable where age > ?", "15")
+        result = LitePalCopy.where("age > ?", "15").sum(studentTable!!, "age")
+        cursor = LitePalCopy.findBySQL("select sum(age) from $studentTable where age > ?", "15")
         if (cursor!!.moveToFirst()) {
             realResult = cursor.getInt(0)
         }

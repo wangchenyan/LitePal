@@ -5,8 +5,8 @@ import com.litepaltest.model.Book
 import com.litepaltest.test.LitePalTestCase
 import junit.framework.TestCase.*
 import org.junit.Test
-import org.litepal.LitePal
-import org.litepal.extension.*
+import org.litepal.copy.LitePalCopy
+import org.litepal.copy.extension.*
 
 @SmallTest
 class QueryBasicKotlinTest : LitePalTestCase() {
@@ -23,7 +23,7 @@ class QueryBasicKotlinTest : LitePalTestCase() {
         book.price = 49.99
         book.isPublished = false
         book.save()
-        val b: Book? = LitePal.find(book.id)
+        val b: Book? = LitePalCopy.find(book.id)
         assertNotNull(b)
         assertEquals(book.id, b!!.id)
         assertEquals(10.5f, b.area)
@@ -58,7 +58,7 @@ class QueryBasicKotlinTest : LitePalTestCase() {
         book2.price = 35.99
         book2.isPublished = false
         book2.save()
-        val bookList = LitePal.findAll<Book>(book1.id, book2.id)
+        val bookList = LitePalCopy.findAll<Book>(book1.id, book2.id)
         assertEquals(2, bookList.size)
         for (book in bookList) {
             if (book.id == book1.id) {
@@ -89,7 +89,7 @@ class QueryBasicKotlinTest : LitePalTestCase() {
     @Test
     fun testFindAll() {
         val expectBooks = getBooks(null, null, null, null, null, null, null)
-        val realBooks = LitePal.findAll<Book>()
+        val realBooks = LitePalCopy.findAll<Book>()
         assertEquals(expectBooks.size, realBooks.size)
         for (i in expectBooks.indices) {
             val expectBook = expectBooks[i]
@@ -110,7 +110,7 @@ class QueryBasicKotlinTest : LitePalTestCase() {
     fun testFindFirst() {
         val expectedBooks = getBooks(null, null, null, null, null, null, null)
         val expectedFirstBook = expectedBooks[0]
-        val realFirstBook = LitePal.findFirst<Book>()
+        val realFirstBook = LitePalCopy.findFirst<Book>()
         assertEquals(expectedFirstBook.id, realFirstBook!!.id)
         assertEquals(expectedFirstBook.bookName, realFirstBook.bookName)
         assertEquals(expectedFirstBook.pages, realFirstBook.pages)
@@ -126,7 +126,7 @@ class QueryBasicKotlinTest : LitePalTestCase() {
     fun testFindLast() {
         val expectedBooks = getBooks(null, null, null, null, null, null, null)
         val expectedLastBook = expectedBooks[expectedBooks.size - 1]
-        val realLastBook = LitePal.findLast<Book>()
+        val realLastBook = LitePalCopy.findLast<Book>()
         assertEquals(expectedLastBook.id, realLastBook!!.id)
         assertEquals(expectedLastBook.bookName, realLastBook.bookName)
         assertEquals(expectedLastBook.pages, realLastBook.pages)
@@ -156,10 +156,10 @@ class QueryBasicKotlinTest : LitePalTestCase() {
         book2.isPublished = false
         book2.save()
 
-        assertTrue(LitePal.isExist<Book>("bookname = ? and pages = ?", "Android Third Line", "556"))
-        assertFalse(LitePal.isExist<Book>("bookname = ? and pages = ?", "Android Third Lines", "556"))
-        assertTrue(LitePal.isExist<Book>("bookname = ? and pages = ?", "Android Fourth Line", "818"))
-        assertFalse(LitePal.isExist<Book>("bookname = ? and pages = ?", "Android Fourth Line", "813"))
+        assertTrue(LitePalCopy.isExist<Book>("bookname = ? and pages = ?", "Android Third Line", "556"))
+        assertFalse(LitePalCopy.isExist<Book>("bookname = ? and pages = ?", "Android Third Lines", "556"))
+        assertTrue(LitePalCopy.isExist<Book>("bookname = ? and pages = ?", "Android Fourth Line", "818"))
+        assertFalse(LitePalCopy.isExist<Book>("bookname = ? and pages = ?", "Android Fourth Line", "813"))
     }
 
 }

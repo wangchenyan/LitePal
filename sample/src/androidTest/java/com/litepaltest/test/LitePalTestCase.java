@@ -3,9 +3,9 @@ package com.litepaltest.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.litepal.tablemanager.Connector;
-import org.litepal.util.BaseUtility;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.tablemanager.Connector;
+import org.litepal.copy.util.BaseUtility;
+import org.litepal.copy.util.DBUtility;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

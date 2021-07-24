@@ -29,11 +29,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 import org.litepal.litepalsample.R;
 import org.litepal.litepalsample.adapter.DataArrayAdapter;
 import org.litepal.litepalsample.model.Singer;
-import org.litepal.tablemanager.Connector;
+import org.litepal.copy.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public class DeleteSampleActivity extends AppCompatActivity implements OnClickLi
 		switch (v.getId()) {
 		case R.id.delete_btn1:
 			try {
-				int rowsAffected = LitePal.delete(Singer.class,
+				int rowsAffected = LitePalCopy.delete(Singer.class,
 						Long.parseLong(mSingerIdEdit.getText().toString()));
 				Toast.makeText(
 						this,
@@ -95,7 +95,7 @@ public class DeleteSampleActivity extends AppCompatActivity implements OnClickLi
 			break;
 		case R.id.delete_btn2:
 			try {
-				int rowsAffected = LitePal.deleteAll(Singer.class, "name=? and age=?",
+				int rowsAffected = LitePalCopy.deleteAll(Singer.class, "name=? and age=?",
 						mNameToDeleteEdit.getText().toString(), mAgeToDeleteEdit.getText()
 								.toString());
 				Toast.makeText(

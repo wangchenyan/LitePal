@@ -5,7 +5,7 @@ import androidx.test.filters.SmallTest;
 import java.util.List;
 
 import org.junit.Test;
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 
 import com.litepaltest.model.Book;
 import com.litepaltest.test.LitePalTestCase;
@@ -22,10 +22,10 @@ public class QueryClusterTest extends LitePalTestCase {
     @Test
 	public void testSelect() {
 		List<Book> expectedBooks = getBooks(null, null, null, null, null, null, null);
-		List<Book> books = LitePal.select("bookname", "price").find(Book.class);
+		List<Book> books = LitePalCopy.select("bookname", "price").find(Book.class);
 		assertEquals(expectedBooks.size(), books.size());
-        Book firstBook = LitePal.select("bookname", "price").findFirst(Book.class);
-        Book lastBook = LitePal.select("bookname", "price").findLast(Book.class);
+        Book firstBook = LitePalCopy.select("bookname", "price").findFirst(Book.class);
+        Book lastBook = LitePalCopy.select("bookname", "price").findLast(Book.class);
         assertNotNull(firstBook);
 		for (int i = 0; i < books.size(); i++) {
 			Book book = books.get(i);
@@ -65,9 +65,9 @@ public class QueryClusterTest extends LitePalTestCase {
 
     @Test
 	public void testWhere() {
-		List<Book> books = LitePal.where("bookname = ?", "Android First Line").find(Book.class);
-        Book firstBook = LitePal.where("bookname = ?", "Android First Line").findFirst(Book.class);
-        Book lastBook = LitePal.where("bookname = ?", "Android First Line").findLast(Book.class);
+		List<Book> books = LitePalCopy.where("bookname = ?", "Android First Line").find(Book.class);
+        Book firstBook = LitePalCopy.where("bookname = ?", "Android First Line").findFirst(Book.class);
+        Book lastBook = LitePalCopy.where("bookname = ?", "Android First Line").findLast(Book.class);
 		for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
 			assertTrue(book.isSaved());
@@ -102,7 +102,7 @@ public class QueryClusterTest extends LitePalTestCase {
 		}
 		List<Book> expectedBooks = getBooks(null, "bookname like ?",
 				new String[] { "Android%Line" }, null, null, null, null);
-		List<Book> realBooks = LitePal.where("bookname like ?", "Android%Line")
+		List<Book> realBooks = LitePalCopy.where("bookname like ?", "Android%Line")
 				.find(Book.class);
 		assertEquals(expectedBooks.size(), realBooks.size());
 
@@ -111,9 +111,9 @@ public class QueryClusterTest extends LitePalTestCase {
 
     @Test
 	public void testOrder() {
-		List<Book> books = LitePal.order("ID").find(Book.class);
-		Book firstBook = LitePal.order("ID").findFirst(Book.class);
-		Book lastBook = LitePal.order("ID").findLast(Book.class);
+		List<Book> books = LitePalCopy.order("ID").find(Book.class);
+		Book firstBook = LitePalCopy.order("ID").findFirst(Book.class);
+		Book lastBook = LitePalCopy.order("ID").findLast(Book.class);
         Book preBook = null;
 		for (int i = 0; i < books.size(); i++) {
 			Book book = books.get(i);
@@ -145,9 +145,9 @@ public class QueryClusterTest extends LitePalTestCase {
                 assertEquals(lastBook.getId(), book.getId());
             }
 		}
-		List<Book> inverseBooks = LitePal.order("ID desc").find(Book.class);
-        Book inverseFirstBook = LitePal.order("ID desc").findFirst(Book.class);
-        Book inverseLastBook = LitePal.order("ID desc").findLast(Book.class);
+		List<Book> inverseBooks = LitePalCopy.order("ID desc").find(Book.class);
+        Book inverseFirstBook = LitePalCopy.order("ID desc").findFirst(Book.class);
+        Book inverseLastBook = LitePalCopy.order("ID desc").findLast(Book.class);
 		Book inversePreBook = null;
 		for (int i = 0; i < inverseBooks.size(); i++) {
 			Book book = inverseBooks.get(i);
@@ -183,11 +183,11 @@ public class QueryClusterTest extends LitePalTestCase {
 
     @Test
 	public void testLimit() {
-		List<Book> bookList = LitePal.limit(1).find(Book.class);
+		List<Book> bookList = LitePalCopy.limit(1).find(Book.class);
 		assertEquals(1, bookList.size());
 		Book book = bookList.get(0);
 		assertTrue(book.isSaved());
-		Book firstBook = LitePal.findFirst(Book.class);
+		Book firstBook = LitePalCopy.findFirst(Book.class);
 		assertTrue(firstBook.isSaved());
 		assertEquals(firstBook.getBookName(), book.getBookName());
 		assertEquals(firstBook.getPages(), book.getPages());
@@ -197,11 +197,11 @@ public class QueryClusterTest extends LitePalTestCase {
 		assertEquals(firstBook.getIsbn(), book.getIsbn());
 		assertEquals(firstBook.getLevel(), book.getLevel());
 		assertEquals(firstBook.getId(), book.getId());
-		bookList = LitePal.order("id desc").limit(1).find(Book.class);
+		bookList = LitePalCopy.order("id desc").limit(1).find(Book.class);
 		assertEquals(1, bookList.size());
 		book = bookList.get(0);
 		assertTrue(book.isSaved());
-		Book lastBook = LitePal.findLast(Book.class);
+		Book lastBook = LitePalCopy.findLast(Book.class);
 		assertTrue(lastBook.isSaved());
 		assertEquals(lastBook.getBookName(), book.getBookName());
 		assertEquals(lastBook.getPages(), book.getPages());
@@ -215,9 +215,9 @@ public class QueryClusterTest extends LitePalTestCase {
 
     @Test
 	public void testOffset() {
-		List<Book> list = LitePal.offset(1).find(Book.class);
+		List<Book> list = LitePalCopy.offset(1).find(Book.class);
 		assertEquals(0, list.size());
-		List<Book> bookList = LitePal.limit(1).offset(1).find(Book.class);
+		List<Book> bookList = LitePalCopy.limit(1).offset(1).find(Book.class);
 		assertEquals(1, bookList.size());
 		Book book = bookList.get(0);
 		assertTrue(book.isSaved());
@@ -244,15 +244,15 @@ public class QueryClusterTest extends LitePalTestCase {
 			book.save();
 			ids[i] = book.getId();
 		}
-		List<Book> books = LitePal
+		List<Book> books = LitePalCopy
 				.select("pages", "isPublished")
 				.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
 						String.valueOf(ids[2])).order("id").limit(2).offset(1).find(Book.class);
-        Book firstBook = LitePal
+        Book firstBook = LitePalCopy
 				.select("pages", "isPublished")
 				.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
 						String.valueOf(ids[2])).order("id").limit(2).offset(1).findFirst(Book.class);
-        Book lastBook = LitePal
+        Book lastBook = LitePalCopy
                 .select("pages", "isPublished")
                 .where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
                         String.valueOf(ids[2])).order("id").limit(2).offset(1).findLast(Book.class);
@@ -293,19 +293,19 @@ public class QueryClusterTest extends LitePalTestCase {
             }
 		}
 
-		Book first1 = LitePal.findFirst(Book.class);
-		Book first2 = LitePal.select("id").findFirst(Book.class);
+		Book first1 = LitePalCopy.findFirst(Book.class);
+		Book first2 = LitePalCopy.select("id").findFirst(Book.class);
 		assertEquals(first1.getId(), first2.getId());
 
-		Book last1 = LitePal.findLast(Book.class);
-		Book last2 = LitePal.select("id").findLast(Book.class);
+		Book last1 = LitePalCopy.findLast(Book.class);
+		Book last2 = LitePalCopy.select("id").findLast(Book.class);
 		assertEquals(last1.getId(), last2.getId());
 
-		List<Book> firstTwoBooks = LitePal.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
+		List<Book> firstTwoBooks = LitePalCopy.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
 				String.valueOf(ids[2])).order("id").limit(2).find(Book.class);
-		firstBook = LitePal.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
+		firstBook = LitePalCopy.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
 				String.valueOf(ids[2])).order("id").limit(2).findFirst(Book.class);
-		lastBook = LitePal.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
+		lastBook = LitePalCopy.where("id=? or id=? or id=?", String.valueOf(ids[0]), String.valueOf(ids[1]),
 				String.valueOf(ids[2])).order("id").limit(2).findLast(Book.class);
 		assertEquals(firstTwoBooks.get(0).getId(), firstBook.getId());
 		assertEquals(firstTwoBooks.get(1).getId(), lastBook.getId());
@@ -322,8 +322,8 @@ public class QueryClusterTest extends LitePalTestCase {
     	book1.save();
     	book2.save();
 
-    	Book book1DB = LitePal.where("isPublished = 0").findFirst(Book.class);
-    	Book book2DB = LitePal.where("isPublished = 1").findFirst(Book.class);
+    	Book book1DB = LitePalCopy.where("isPublished = 0").findFirst(Book.class);
+    	Book book2DB = LitePalCopy.where("isPublished = 1").findFirst(Book.class);
     	assertNotNull(book1DB);
     	assertNotNull(book2DB);
 	}

@@ -6,11 +6,11 @@ import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.litepal.LitePal.find
-import org.litepal.LitePal.findBySQL
-import org.litepal.LitePal.where
-import org.litepal.extension.saveAll
-import org.litepal.util.DBUtility
+import org.litepal.copy.LitePalCopy.find
+import org.litepal.copy.LitePalCopy.findBySQL
+import org.litepal.copy.LitePalCopy.where
+import org.litepal.copy.extension.saveAll
+import org.litepal.copy.util.DBUtility
 import java.util.*
 
 @SmallTest

@@ -6,7 +6,7 @@ import com.litepaltest.model.Student;
 import com.litepaltest.test.LitePalTestCase;
 
 import org.junit.Test;
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 
 import java.util.Calendar;
 
@@ -25,7 +25,7 @@ public class QueryDateTest extends LitePalTestCase {
 		student1.setName("Student 1");
 		student1.setBirthday(calendar.getTime());
 		student1.save();
-		Student studentFromDB = LitePal.find(Student.class, student1.getId());
+		Student studentFromDB = LitePalCopy.find(Student.class, student1.getId());
 		assertEquals("Student 1", studentFromDB.getName());
 		assertEquals(calendar.getTimeInMillis(), studentFromDB.getBirthday().getTime());
 	}
@@ -39,7 +39,7 @@ public class QueryDateTest extends LitePalTestCase {
 		student1.setName("Student 2");
 		student1.setBirthday(calendar.getTime());
 		student1.save();
-		Student studentFromDB = LitePal.find(Student.class, student1.getId());
+		Student studentFromDB = LitePalCopy.find(Student.class, student1.getId());
 		assertEquals("Student 2", studentFromDB.getName());
 		assertEquals(calendar.getTimeInMillis(), studentFromDB.getBirthday().getTime());
 	}
@@ -49,7 +49,7 @@ public class QueryDateTest extends LitePalTestCase {
 		Student student = new Student();
 		student.setName("School Student");
 		assertTrue(student.save());
-		Student studentFromDB = LitePal.find(Student.class, student.getId());
+		Student studentFromDB = LitePalCopy.find(Student.class, student.getId());
 		assertEquals(1589203961859L, studentFromDB.getSchoolDate().getTime());
 	}
 

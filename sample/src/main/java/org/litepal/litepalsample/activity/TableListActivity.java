@@ -28,8 +28,8 @@ import android.widget.ProgressBar;
 
 import org.litepal.litepalsample.R;
 import org.litepal.litepalsample.adapter.StringArrayAdapter;
-import org.litepal.tablemanager.Connector;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.tablemanager.Connector;
+import org.litepal.copy.util.DBUtility;
 
 import java.util.ArrayList;
 import java.util.List;

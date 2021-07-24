@@ -26,7 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 import org.litepal.litepalsample.R;
 import org.litepal.litepalsample.model.Singer;
 
@@ -58,12 +58,12 @@ public class SumSampleActivity extends AppCompatActivity implements OnClickListe
 		int result = 0;
 		switch (view.getId()) {
 		case R.id.sum_btn1:
-			result = LitePal.sum(Singer.class, "age", Integer.TYPE);
+			result = LitePalCopy.sum(Singer.class, "age", Integer.TYPE);
 			mResultText.setText(String.valueOf(result));
 			break;
 		case R.id.sum_btn2:
 			try {
-				result = LitePal.where("age > ?", mAgeEdit.getText().toString()).sum(
+				result = LitePalCopy.where("age > ?", mAgeEdit.getText().toString()).sum(
 						Singer.class, "age", Integer.TYPE);
 				mResultText.setText(String.valueOf(result));
 			} catch (Exception e) {

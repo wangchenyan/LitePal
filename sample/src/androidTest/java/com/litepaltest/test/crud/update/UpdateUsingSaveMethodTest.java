@@ -10,8 +10,8 @@ import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.litepal.LitePal;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.LitePalCopy;
+import org.litepal.copy.util.DBUtility;
 
 import com.litepaltest.model.Cellphone;
 import com.litepaltest.model.Classroom;
@@ -123,7 +123,7 @@ public class UpdateUsingSaveMethodTest extends LitePalTestCase {
         classroom.getNews().add("s");
         classroom.getNumbers().clear();
         classroom.save();
-        Classroom c = LitePal.find(Classroom.class, classroom.get_id());
+        Classroom c = LitePalCopy.find(Classroom.class, classroom.get_id());
         assertEquals("Classroom update", c.getName());
         assertEquals(4, classroom.getNews().size());
         assertEquals(0, classroom.getNumbers().size());
@@ -153,7 +153,7 @@ public class UpdateUsingSaveMethodTest extends LitePalTestCase {
 		assertTrue(s2.save());
 		assertEquals(c2.get_id(), getForeignKeyValue(studentTable, classroomTable, s1.getId()));
 		assertEquals(c2.get_id(), getForeignKeyValue(studentTable, classroomTable, s2.getId()));
-		Student student2 = LitePal.find(Student.class, s2.getId());
+		Student student2 = LitePalCopy.find(Student.class, s2.getId());
 		calendar.clear();
 		calendar.set(1989, 7, 7, 0, 0, 0);
 		assertEquals(calendar.getTimeInMillis(), student2.getBirthday().getTime());

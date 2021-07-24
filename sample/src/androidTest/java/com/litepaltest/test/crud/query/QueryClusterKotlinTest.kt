@@ -5,8 +5,10 @@ import com.litepaltest.model.Book
 import com.litepaltest.test.LitePalTestCase
 import junit.framework.TestCase.*
 import org.junit.Test
-import org.litepal.LitePal
-import org.litepal.extension.*
+import org.litepal.copy.LitePalCopy
+import org.litepal.copy.extension.find
+import org.litepal.copy.extension.findFirst
+import org.litepal.copy.extension.findLast
 
 @SmallTest
 class QueryClusterKotlinTest : LitePalTestCase() {
@@ -14,10 +16,10 @@ class QueryClusterKotlinTest : LitePalTestCase() {
     @Test
     fun testSelect() {
         val expectedBooks = getBooks(null, null, null, null, null, null, null)
-        val books = LitePal.select("bookname", "price").find<Book>()
+        val books = LitePalCopy.select("bookname", "price").find<Book>()
         assertEquals(expectedBooks.size, books.size)
-        val firstBook = LitePal.select("bookname", "price").findFirst<Book>()
-        val lastBook = LitePal.select("bookname", "price").findLast<Book>()
+        val firstBook = LitePalCopy.select("bookname", "price").findFirst<Book>()
+        val lastBook = LitePalCopy.select("bookname", "price").findLast<Book>()
         assertNotNull(firstBook)
         for (i in books.indices) {
             val book = books[i]
@@ -57,9 +59,9 @@ class QueryClusterKotlinTest : LitePalTestCase() {
 
     @Test
     fun testWhere() {
-        val books = LitePal.where("bookname = ?", "Android First Line").find<Book>()
-        val firstBook = LitePal.where("bookname = ?", "Android First Line").findFirst<Book>()
-        val lastBook = LitePal.where("bookname = ?", "Android First Line").findLast<Book>()
+        val books = LitePalCopy.where("bookname = ?", "Android First Line").find<Book>()
+        val firstBook = LitePalCopy.where("bookname = ?", "Android First Line").findFirst<Book>()
+        val lastBook = LitePalCopy.where("bookname = ?", "Android First Line").findLast<Book>()
         for (i in books.indices) {
             val book = books[i]
             assertTrue(book.isSaved)
@@ -94,15 +96,15 @@ class QueryClusterKotlinTest : LitePalTestCase() {
         }
         val expectedBooks = getBooks(null, "bookname like ?",
                 arrayOf("Android%Line"), null, null, null, null)
-        val realBooks = LitePal.where("bookname like ?", "Android%Line").find<Book>()
+        val realBooks = LitePalCopy.where("bookname like ?", "Android%Line").find<Book>()
         assertEquals(expectedBooks.size, realBooks.size)
     }
 
     @Test
     fun testOrder() {
-        val books = LitePal.order("ID").find<Book>()
-        val firstBook = LitePal.order("ID").findFirst<Book>()
-        val lastBook = LitePal.order("ID").findLast<Book>()
+        val books = LitePalCopy.order("ID").find<Book>()
+        val firstBook = LitePalCopy.order("ID").findFirst<Book>()
+        val lastBook = LitePalCopy.order("ID").findLast<Book>()
         var preBook: Book? = null
         for (i in books.indices) {
             val book = books[i]
@@ -134,9 +136,9 @@ class QueryClusterKotlinTest : LitePalTestCase() {
                 assertEquals(lastBook.id, book.id)
             }
         }
-        val inverseBooks = LitePal.order("ID desc").find<Book>()
-        val inverseFirstBook = LitePal.order("ID desc").findFirst<Book>()
-        val inverseLastBook = LitePal.order("ID desc").findLast<Book>()
+        val inverseBooks = LitePalCopy.order("ID desc").find<Book>()
+        val inverseFirstBook = LitePalCopy.order("ID desc").findFirst<Book>()
+        val inverseLastBook = LitePalCopy.order("ID desc").findLast<Book>()
         var inversePreBook: Book? = null
         for (i in inverseBooks.indices) {
             val book = inverseBooks[i]
@@ -172,11 +174,11 @@ class QueryClusterKotlinTest : LitePalTestCase() {
 
     @Test
     fun testLimit() {
-        var bookList = LitePal.limit(1).find<Book>()
+        var bookList = LitePalCopy.limit(1).find<Book>()
         assertEquals(1, bookList.size)
         var book = bookList[0]
         assertTrue(book.isSaved)
-        val firstBook = LitePal.findFirst<Book>()
+        val firstBook = LitePalCopy.findFirst<Book>()
         assertTrue(firstBook!!.isSaved)
         assertEquals(firstBook.bookName, book.bookName)
         assertEquals(firstBook.pages, book.pages)
@@ -186,11 +188,11 @@ class QueryClusterKotlinTest : LitePalTestCase() {
         assertEquals(firstBook.isbn, book.isbn)
         assertEquals(firstBook.level, book.level)
         assertEquals(firstBook.id, book.id)
-        bookList = LitePal.order("id desc").limit(1).find()
+        bookList = LitePalCopy.order("id desc").limit(1).find()
         assertEquals(1, bookList.size)
         book = bookList[0]
         assertTrue(book.isSaved)
-        val lastBook = LitePal.findLast(Book::class.java)
+        val lastBook = LitePalCopy.findLast(Book::class.java)
         assertTrue(lastBook!!.isSaved)
         assertEquals(lastBook.bookName, book.bookName)
         assertEquals(lastBook.pages, book.pages)
@@ -204,9 +206,9 @@ class QueryClusterKotlinTest : LitePalTestCase() {
 
     @Test
     fun testOffset() {
-        val list = LitePal.offset(1).find<Book>()
+        val list = LitePalCopy.offset(1).find<Book>()
         assertEquals(0, list.size)
-        val bookList = LitePal.limit(1).offset(1).find<Book>()
+        val bookList = LitePalCopy.limit(1).offset(1).find<Book>()
         assertEquals(1, bookList.size)
         val book = bookList[0]
         assertTrue(book.isSaved)
@@ -233,15 +235,15 @@ class QueryClusterKotlinTest : LitePalTestCase() {
             book.save()
             ids[i] = book.id
         }
-        val books = LitePal
+        val books = LitePalCopy
                 .select("pages", "isPublished")
                 .where("id=? or id=? or id=?", ids[0].toString(), ids[1].toString(),
                         ids[2].toString()).order("id").limit(2).offset(1).find<Book>()
-        val firstBook = LitePal
+        val firstBook = LitePalCopy
                 .select("pages", "isPublished")
                 .where("id=? or id=? or id=?", ids[0].toString(), ids[1].toString(),
                         ids[2].toString()).order("id").limit(2).offset(1).findFirst<Book>()
-        val lastBook = LitePal
+        val lastBook = LitePalCopy
                 .select("pages", "isPublished")
                 .where("id=? or id=? or id=?", ids[0].toString(), ids[1].toString(),
                         ids[2].toString()).order("id").limit(2).offset(1).findLast<Book>()

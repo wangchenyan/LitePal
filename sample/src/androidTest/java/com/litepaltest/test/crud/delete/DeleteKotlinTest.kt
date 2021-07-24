@@ -10,12 +10,12 @@ import com.litepaltest.test.LitePalTestCase
 import junit.framework.TestCase.*
 import org.junit.Before
 import org.junit.Test
-import org.litepal.LitePal
-import org.litepal.exceptions.DataSupportException
-import org.litepal.extension.delete
-import org.litepal.extension.deleteAll
-import org.litepal.extension.find
-import org.litepal.util.DBUtility
+import org.litepal.copy.LitePalCopy
+import org.litepal.copy.exceptions.DataSupportException
+import org.litepal.copy.extension.delete
+import org.litepal.copy.extension.deleteAll
+import org.litepal.copy.extension.find
+import org.litepal.copy.util.DBUtility
 import java.util.*
 
 @SmallTest
@@ -114,7 +114,7 @@ class DeleteKotlinTest : LitePalTestCase() {
     fun testDeleteById() {
         initJude()
         jude!!.save()
-        val rowsAffected = LitePal.delete<Student>(jude!!.id.toLong())
+        val rowsAffected = LitePalCopy.delete<Student>(jude!!.id.toLong())
         assertEquals(1, rowsAffected)
         val s = getStudent(jude!!.id.toLong())
         assertNull(s)
@@ -131,7 +131,7 @@ class DeleteKotlinTest : LitePalTestCase() {
 
     @Test
     fun testDeleteWithNotExistsRecordById() {
-        val rowsAffected = LitePal.delete<Student>(998909)
+        val rowsAffected = LitePalCopy.delete<Student>(998909)
         assertEquals(0, rowsAffected)
     }
 
@@ -150,7 +150,7 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteCascadeM2OAssociationsOnMSideById() {
         createClassroomStudentsTeachers()
-        val rowsAffected = LitePal.delete<Classroom>(gameRoom!!._id.toLong())
+        val rowsAffected = LitePalCopy.delete<Classroom>(gameRoom!!._id.toLong())
         assertEquals(5, rowsAffected)
         assertNull(getClassroom(gameRoom!!._id.toLong()))
         assertNull(getStudent(jude!!.id.toLong()))
@@ -162,7 +162,7 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteAllCascadeM2OAssociationsOnMSide() {
         createClassroomStudentsTeachers()
-        val rowsAffected = LitePal.deleteAll<Classroom>("id = ?", gameRoom!!._id.toString() + "")
+        val rowsAffected = LitePalCopy.deleteAll<Classroom>("id = ?", gameRoom!!._id.toString() + "")
         assertEquals(5, rowsAffected)
         assertNull(getClassroom(gameRoom!!._id.toLong()))
         assertNull(getStudent(jude!!.id.toLong()))
@@ -191,16 +191,16 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteCascadeM2OAssociationsOnOSideById() {
         createClassroomStudentsTeachers()
-        var rowsAffected = LitePal.delete<Student>(jude!!.id.toLong())
+        var rowsAffected = LitePalCopy.delete<Student>(jude!!.id.toLong())
         assertEquals(1, rowsAffected)
         assertNull(getStudent(jude!!.id.toLong()))
-        rowsAffected = LitePal.delete<Student>(rose!!.id.toLong())
+        rowsAffected = LitePalCopy.delete<Student>(rose!!.id.toLong())
         assertEquals(1, rowsAffected)
         assertNull(getStudent(rose!!.id.toLong()))
-        rowsAffected = LitePal.delete<Teacher>(john!!.id.toLong())
+        rowsAffected = LitePalCopy.delete<Teacher>(john!!.id.toLong())
         assertEquals(1, rowsAffected)
         assertNull(getTeacher(john!!.id.toLong()))
-        rowsAffected = LitePal.delete<Teacher>(mike!!.id.toLong())
+        rowsAffected = LitePalCopy.delete<Teacher>(mike!!.id.toLong())
         assertEquals(1, rowsAffected)
         assertNull(getTeacher(mike!!.id.toLong()))
     }
@@ -208,16 +208,16 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteAllCascadeM2OAssociationsOnOSide() {
         createClassroomStudentsTeachers()
-        var rowsAffected = LitePal.deleteAll<Student>("id = ?", jude!!.id.toString())
+        var rowsAffected = LitePalCopy.deleteAll<Student>("id = ?", jude!!.id.toString())
         assertEquals(1, rowsAffected)
         assertNull(getStudent(jude!!.id.toLong()))
-        rowsAffected = LitePal.deleteAll<Student>("id = ?", rose!!.id.toString())
+        rowsAffected = LitePalCopy.deleteAll<Student>("id = ?", rose!!.id.toString())
         assertEquals(1, rowsAffected)
         assertNull(getStudent(rose!!.id.toLong()))
-        rowsAffected = LitePal.deleteAll<Teacher>("id = ?", john!!.id.toString())
+        rowsAffected = LitePalCopy.deleteAll<Teacher>("id = ?", john!!.id.toString())
         assertEquals(1, rowsAffected)
         assertNull(getTeacher(john!!.id.toLong()))
-        rowsAffected = LitePal.deleteAll<Teacher>("id = ?", mike!!.id.toString())
+        rowsAffected = LitePalCopy.deleteAll<Teacher>("id = ?", mike!!.id.toString())
         assertEquals(1, rowsAffected)
         assertNull(getTeacher(mike!!.id.toLong()))
     }
@@ -245,19 +245,19 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteCascadeO2OAssociationsById() {
         createStudentsTeachersWithIdCard()
-        var affectedRows = LitePal.delete<Student>(jude!!.id.toLong())
+        var affectedRows = LitePalCopy.delete<Student>(jude!!.id.toLong())
         assertEquals(2, affectedRows)
         assertNull(getStudent(jude!!.id.toLong()))
         assertNull(getIdCard(judeCard!!.id.toLong()))
-        affectedRows = LitePal.delete<IdCard>(roseCard!!.id.toLong())
+        affectedRows = LitePalCopy.delete<IdCard>(roseCard!!.id.toLong())
         assertEquals(2, affectedRows)
         assertNull(getStudent(rose!!.id.toLong()))
         assertNull(getIdCard(roseCard!!.id.toLong()))
-        affectedRows = LitePal.delete<Teacher>(john!!.id.toLong())
+        affectedRows = LitePalCopy.delete<Teacher>(john!!.id.toLong())
         assertEquals(2, affectedRows)
         assertNull(getTeacher(john!!.id.toLong()))
         assertNull(getIdCard(johnCard!!.id.toLong()))
-        affectedRows = LitePal.delete<IdCard>(mikeCard!!.id.toLong())
+        affectedRows = LitePalCopy.delete<IdCard>(mikeCard!!.id.toLong())
         assertEquals(1, affectedRows)
         assertNull(getIdCard(mikeCard!!.id.toLong()))
     }
@@ -265,19 +265,19 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteAllCascadeO2OAssociations() {
         createStudentsTeachersWithIdCard()
-        var affectedRows = LitePal.deleteAll<Student>("id = ?", jude!!.id.toString())
+        var affectedRows = LitePalCopy.deleteAll<Student>("id = ?", jude!!.id.toString())
         assertEquals(2, affectedRows)
         assertNull(getStudent(jude!!.id.toLong()))
         assertNull(getIdCard(judeCard!!.id.toLong()))
-        affectedRows = LitePal.deleteAll<IdCard>("id = ?", roseCard!!.id.toString() + "")
+        affectedRows = LitePalCopy.deleteAll<IdCard>("id = ?", roseCard!!.id.toString() + "")
         assertEquals(2, affectedRows)
         assertNull(getStudent(rose!!.id.toLong()))
         assertNull(getIdCard(roseCard!!.id.toLong()))
-        affectedRows = LitePal.deleteAll<Teacher>("id = ?", "" + john!!.id)
+        affectedRows = LitePalCopy.deleteAll<Teacher>("id = ?", "" + john!!.id)
         assertEquals(2, affectedRows)
         assertNull(getTeacher(john!!.id.toLong()))
         assertNull(getIdCard(johnCard!!.id.toLong()))
-        affectedRows = LitePal.deleteAll<IdCard>("id=?", "" + mikeCard!!.id)
+        affectedRows = LitePalCopy.deleteAll<IdCard>("id=?", "" + mikeCard!!.id)
         assertEquals(1, affectedRows)
         assertNull(getIdCard(mikeCard!!.id.toLong()))
     }
@@ -303,14 +303,14 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteCascadeM2MAssociationsById() {
         createStudentsTeachersWithAssociations()
-        var rowsAffected = LitePal.delete<Teacher>(john!!.id.toLong())
+        var rowsAffected = LitePalCopy.delete<Teacher>(john!!.id.toLong())
         assertEquals(2, rowsAffected)
         assertNull(getTeacher(john!!.id.toLong()))
         assertM2MFalse(studentTable, teacherTable, rose!!.id.toLong(), john!!.id.toLong())
         assertM2M(studentTable, teacherTable, rose!!.id.toLong(), mike!!.id.toLong())
         assertM2M(studentTable, teacherTable, jude!!.id.toLong(), mike!!.id.toLong())
         createStudentsTeachersWithAssociations()
-        rowsAffected = LitePal.delete<Teacher>(mike!!.id.toLong())
+        rowsAffected = LitePalCopy.delete<Teacher>(mike!!.id.toLong())
         assertEquals(3, rowsAffected)
         assertNull(getTeacher(mike!!.id.toLong()))
         assertM2MFalse(studentTable, teacherTable, rose!!.id.toLong(), mike!!.id.toLong())
@@ -321,14 +321,14 @@ class DeleteKotlinTest : LitePalTestCase() {
     @Test
     fun testDeleteAllCascadeM2MAssociations() {
         createStudentsTeachersWithAssociations()
-        var rowsAffected = LitePal.deleteAll<Teacher>("id=?", "" + john!!.id)
+        var rowsAffected = LitePalCopy.deleteAll<Teacher>("id=?", "" + john!!.id)
         assertEquals(2, rowsAffected)
         assertNull(getTeacher(john!!.id.toLong()))
         assertM2MFalse(studentTable, teacherTable, rose!!.id.toLong(), john!!.id.toLong())
         assertM2M(studentTable, teacherTable, rose!!.id.toLong(), mike!!.id.toLong())
         assertM2M(studentTable, teacherTable, jude!!.id.toLong(), mike!!.id.toLong())
         createStudentsTeachersWithAssociations()
-        rowsAffected = LitePal.deleteAll<Teacher>("id=?", "" + mike!!.id)
+        rowsAffected = LitePalCopy.deleteAll<Teacher>("id=?", "" + mike!!.id)
         assertEquals(3, rowsAffected)
         assertNull(getTeacher(mike!!.id.toLong()))
         assertM2MFalse(studentTable, teacherTable, rose!!.id.toLong(), mike!!.id.toLong())
@@ -353,14 +353,14 @@ class DeleteKotlinTest : LitePalTestCase() {
         val s3 = Student()
         s3.classroom = classroom2
         s3.save()
-        var rows = LitePal.deleteAll<Classroom>("name = ?", classroom.name)
+        var rows = LitePalCopy.deleteAll<Classroom>("name = ?", classroom.name)
         assertEquals(3, rows)
         assertNull(getClassroom(classroom._id.toLong()))
         assertNull(getStudent(s1.id.toLong()))
         assertNull(getStudent(s2.id.toLong()))
         assertNotNull(getClassroom(classroom2._id.toLong()))
         assertNotNull(getStudent(s3.id.toLong()))
-        rows = LitePal.deleteAll<Classroom>("name = ?", classroom2.name)
+        rows = LitePalCopy.deleteAll<Classroom>("name = ?", classroom2.name)
         assertEquals(2, rows)
         assertNull(getClassroom(classroom2._id.toLong()))
         assertNull(getStudent(s3.id.toLong()))
@@ -377,10 +377,10 @@ class DeleteKotlinTest : LitePalTestCase() {
             s.save()
             ids[i] = s.id
         }
-        var affectedRows = LitePal.deleteAll<Student>("name = ? and age = ?", "Dusting", "10088")
+        var affectedRows = LitePalCopy.deleteAll<Student>("name = ? and age = ?", "Dusting", "10088")
         assertEquals(1, affectedRows)
         assertNull(getStudent(ids[2].toLong()))
-        affectedRows = LitePal.deleteAll<Student>("name = ? and age > ? and age < ?", "Dusting", "10085", "10092")
+        affectedRows = LitePalCopy.deleteAll<Student>("name = ? and age > ? and age < ?", "Dusting", "10085", "10092")
         assertEquals(4, affectedRows)
     }
 
@@ -388,23 +388,23 @@ class DeleteKotlinTest : LitePalTestCase() {
     fun testDeleteAllRows() {
         createStudentsTeachersWithIdCard()
         var rowsCount = getRowsCount(teacherTable)
-        var affectedRows = LitePal.deleteAll<Teacher>()
+        var affectedRows = LitePalCopy.deleteAll<Teacher>()
         assertTrue(rowsCount <= affectedRows)
         rowsCount = getRowsCount(studentTable)
-        affectedRows = LitePal.deleteAll<Student>()
+        affectedRows = LitePalCopy.deleteAll<Student>()
         assertTrue(rowsCount <= affectedRows)
         rowsCount = getRowsCount(DBUtility.getTableNameByClassName(IdCard::class.java.name))
-        affectedRows = LitePal.deleteAll<IdCard>()
+        affectedRows = LitePalCopy.deleteAll<IdCard>()
         assertTrue(rowsCount <= affectedRows)
         createStudentsTeachersWithAssociations()
         rowsCount = getRowsCount(teacherTable)
-        affectedRows = LitePal.deleteAll<Teacher>()
+        affectedRows = LitePalCopy.deleteAll<Teacher>()
         assertTrue(rowsCount <= affectedRows)
         rowsCount = getRowsCount(studentTable)
-        affectedRows = LitePal.deleteAll<Student>()
+        affectedRows = LitePalCopy.deleteAll<Student>()
         assertTrue(rowsCount <= affectedRows)
         rowsCount = getRowsCount(DBUtility.getIntermediateTableName(studentTable, teacherTable))
-        affectedRows = LitePal.deleteAll(DBUtility.getIntermediateTableName(studentTable, teacherTable))
+        affectedRows = LitePalCopy.deleteAll(DBUtility.getIntermediateTableName(studentTable, teacherTable))
         assertTrue(rowsCount <= affectedRows)
     }
 
@@ -417,39 +417,39 @@ class DeleteKotlinTest : LitePalTestCase() {
             s.age = i + 10
             students.add(s)
         }
-        LitePal.saveAll(students)
-        var list = LitePal.where("name=?", "Dusting").find<Student>()
+        LitePalCopy.saveAll(students)
+        var list = LitePalCopy.where("name=?", "Dusting").find<Student>()
         assertTrue(list.size >= 5)
-        LitePal.deleteAll(Student::class.java, "name=?", "Dusting")
-        list = LitePal.where("name=?", "Dusting").find()
+        LitePalCopy.deleteAll(Student::class.java, "name=?", "Dusting")
+        list = LitePalCopy.where("name=?", "Dusting").find()
         assertEquals(0, list.size)
-        LitePal.saveAll(students)
-        list = LitePal.where("name=?", "Dusting").find()
+        LitePalCopy.saveAll(students)
+        list = LitePalCopy.where("name=?", "Dusting").find()
         assertEquals(0, list.size)
-        LitePal.markAsDeleted(students)
-        LitePal.saveAll(students)
-        list = LitePal.where("name=?", "Dusting").find()
+        LitePalCopy.markAsDeleted(students)
+        LitePalCopy.saveAll(students)
+        list = LitePalCopy.where("name=?", "Dusting").find()
         assertEquals(5, list.size)
     }
 
     @Test
     fun testDeleteAllWithWrongConditions() {
         try {
-            LitePal.deleteAll<Student>("name = 'Dustin'", "aaa")
+            LitePalCopy.deleteAll<Student>("name = 'Dustin'", "aaa")
             fail()
         } catch (e: DataSupportException) {
             assertEquals("The parameters in conditions are incorrect.", e.message)
         }
 
         try {
-            LitePal.deleteAll<Student>(null, null)
+            LitePalCopy.deleteAll<Student>(null, null)
             fail()
         } catch (e: DataSupportException) {
             assertEquals("The parameters in conditions are incorrect.", e.message)
         }
 
         try {
-            LitePal.deleteAll<Student>("address = ?", "HK")
+            LitePalCopy.deleteAll<Student>("address = ?", "HK")
             fail()
         } catch (e: SQLiteException) {
         }
@@ -467,21 +467,21 @@ class DeleteKotlinTest : LitePalTestCase() {
         val id = classroom._id
         val tableName = DBUtility.getGenericTableName(Classroom::class.java.name, "news")
         val column = DBUtility.getGenericValueIdColumnName(Classroom::class.java.name)
-        var c = LitePal.findBySQL("select * from $tableName where $column = ?", id.toString())
+        var c = LitePalCopy.findBySQL("select * from $tableName where $column = ?", id.toString())
         assertEquals(3, c!!.count)
         c.close()
         classroom.delete()
-        c = LitePal.findBySQL("select * from $tableName where $column = ?", id.toString())
+        c = LitePalCopy.findBySQL("select * from $tableName where $column = ?", id.toString())
         assertEquals(0, c!!.count)
         c.close()
         assertFalse(classroom.isSaved)
         classroom.save()
         assertTrue(classroom.isSaved)
-        c = LitePal.findBySQL("select * from $tableName where $column = ?", classroom._id.toString())
+        c = LitePalCopy.findBySQL("select * from $tableName where $column = ?", classroom._id.toString())
         assertEquals(3, c!!.count)
         c.close()
-        LitePal.deleteAll<Classroom>("id = ?", classroom._id.toString())
-        c = LitePal.findBySQL("select * from $tableName where $column = ?", classroom._id.toString())
+        LitePalCopy.deleteAll<Classroom>("id = ?", classroom._id.toString())
+        c = LitePalCopy.findBySQL("select * from $tableName where $column = ?", classroom._id.toString())
         assertEquals(0, c!!.count)
         c.close()
     }

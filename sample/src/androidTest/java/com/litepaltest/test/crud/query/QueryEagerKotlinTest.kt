@@ -8,11 +8,11 @@ import com.litepaltest.model.Teacher
 import junit.framework.TestCase.*
 import org.junit.Before
 import org.junit.Test
-import org.litepal.LitePal
-import org.litepal.extension.deleteAll
-import org.litepal.extension.find
-import org.litepal.extension.findAll
-import org.litepal.extension.findLast
+import org.litepal.copy.LitePalCopy
+import org.litepal.copy.extension.deleteAll
+import org.litepal.copy.extension.find
+import org.litepal.copy.extension.findAll
+import org.litepal.copy.extension.findLast
 import java.util.*
 
 @SmallTest
@@ -81,7 +81,7 @@ class QueryEagerKotlinTest {
 
     @Test
     fun testEagerFind() {
-        var s1 = LitePal.find<Student>(student1!!.id.toLong(), true)
+        var s1 = LitePalCopy.find<Student>(student1!!.id.toLong(), true)
         var c: Classroom? = s1!!.classroom
         val ic = s1.idcard
         val tList = s1.teachers
@@ -110,12 +110,12 @@ class QueryEagerKotlinTest {
             }
             fail()
         }
-        s1 = LitePal.find<Student>(student1!!.id.toLong())
+        s1 = LitePalCopy.find<Student>(student1!!.id.toLong())
         c = s1!!.classroom
         assertNull(c)
         assertNull(s1.idcard)
         assertEquals(0, s1.teachers.size)
-        c = LitePal.find<Classroom>(classroom!!._id.toLong(), true)
+        c = LitePalCopy.find<Classroom>(classroom!!._id.toLong(), true)
         assertEquals(2, c!!.studentCollection.size)
         assertEquals(1, c.teachers.size)
         for (s in c.studentCollection) {
@@ -132,7 +132,7 @@ class QueryEagerKotlinTest {
             }
             fail()
         }
-        val t1 = LitePal.find<Teacher>(teacher2!!.id.toLong(), true)
+        val t1 = LitePalCopy.find<Teacher>(teacher2!!.id.toLong(), true)
         val sList = t1!!.students
         assertEquals(teacher2!!.students.size, sList.size)
         for (s in sList) {
@@ -149,45 +149,45 @@ class QueryEagerKotlinTest {
             }
             fail()
         }
-        val s3 = LitePal.find<Student>(student3!!.id.toLong())
+        val s3 = LitePalCopy.find<Student>(student3!!.id.toLong())
         assertNull(s3!!.birthday)
     }
 
     private fun resetData() {
-        LitePal.deleteAll<Student>()
-        LitePal.deleteAll<Classroom>()
-        LitePal.deleteAll<Teacher>()
-        LitePal.deleteAll<IdCard>()
+        LitePalCopy.deleteAll<Student>()
+        LitePalCopy.deleteAll<Classroom>()
+        LitePalCopy.deleteAll<Teacher>()
+        LitePalCopy.deleteAll<IdCard>()
         setUp()
     }
 
     @Test
     fun testEagerFindFirst() {
         resetData()
-        var s1 = LitePal.findFirst(Student::class.java)
+        var s1 = LitePalCopy.findFirst(Student::class.java)
         assertNull(s1!!.classroom)
-        s1 = LitePal.findFirst(Student::class.java, true)
+        s1 = LitePalCopy.findFirst(Student::class.java, true)
         assertNotNull(s1)
     }
 
     @Test
     fun testEagerFindLast() {
         resetData()
-        var t1 = LitePal.findLast<Teacher>()
+        var t1 = LitePalCopy.findLast<Teacher>()
         assertEquals(0, t1!!.students.size)
-        t1 = LitePal.findLast<Teacher>(true)
+        t1 = LitePalCopy.findLast<Teacher>(true)
         assertTrue(0 < t1!!.students.size)
     }
 
     @Test
     fun testEagerFindAll() {
         resetData()
-        var sList = LitePal.findAll<Student>()
+        var sList = LitePalCopy.findAll<Student>()
         for (s in sList) {
             assertNull(s.classroom)
             assertEquals(0, s.teachers.size)
         }
-        sList = LitePal.findAll(true)
+        sList = LitePalCopy.findAll(true)
         for (s in sList) {
             if (s.classroom == null) {
                 continue
@@ -215,11 +215,11 @@ class QueryEagerKotlinTest {
     @Test
     fun testEagerClusterQuery() {
         resetData()
-        var sList = LitePal.where("id = ?", student1!!.id.toString()).find<Student>()
+        var sList = LitePalCopy.where("id = ?", student1!!.id.toString()).find<Student>()
         assertEquals(1, sList.size)
         var s = sList[0]
         assertNull(s.classroom)
-        sList = LitePal.where("id = ?", student1!!.id.toString()).find(true)
+        sList = LitePalCopy.where("id = ?", student1!!.id.toString()).find(true)
         assertEquals(1, sList.size)
         s = sList[0]
         assertNotNull(s.classroom)

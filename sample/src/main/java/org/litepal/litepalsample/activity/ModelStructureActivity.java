@@ -29,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.litepal.litepalsample.R;
-import org.litepal.util.BaseUtility;
+import org.litepal.copy.util.BaseUtility;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

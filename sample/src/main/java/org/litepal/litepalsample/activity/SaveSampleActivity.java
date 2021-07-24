@@ -32,7 +32,7 @@ import android.widget.Toast;
 import org.litepal.litepalsample.R;
 import org.litepal.litepalsample.adapter.DataArrayAdapter;
 import org.litepal.litepalsample.model.Singer;
-import org.litepal.tablemanager.Connector;
+import org.litepal.copy.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;

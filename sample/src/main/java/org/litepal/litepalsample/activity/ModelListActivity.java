@@ -26,11 +26,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import org.litepal.LitePalApplication;
-import org.litepal.exceptions.ParseConfigurationFileException;
+import org.litepal.copy.LitePalApplication;
+import org.litepal.copy.exceptions.ParseConfigurationFileException;
 import org.litepal.litepalsample.R;
 import org.litepal.litepalsample.adapter.StringArrayAdapter;
-import org.litepal.util.Const;
+import org.litepal.copy.util.Const;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;

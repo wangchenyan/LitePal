@@ -15,7 +15,7 @@ import com.litepaltest.model.WeiboMessage;
 import com.litepaltest.test.LitePalTestCase;
 
 import org.junit.Test;
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class SaveTest extends LitePalTestCase {
 		Computer c = getComputer(computer.getId());
 		assertEquals("asus", c.getBrand());
 		assertEquals(699.00, c.getPrice());
-		Computer cc = LitePal.find(Computer.class, computer.getId());
+		Computer cc = LitePalCopy.find(Computer.class, computer.getId());
 		assertEquals("asus", cc.getBrand());
 		assertEquals(699.00, cc.getPrice());
 		Product p = new Product(null);
@@ -153,7 +153,7 @@ public class SaveTest extends LitePalTestCase {
         weChatMessage.setType(1);
         assertTrue(weChatMessage.save());
         assertTrue(weChatMessage.getId() > 0);
-        WeChatMessage message1 = LitePal.find(WeChatMessage.class, weChatMessage.getId());
+        WeChatMessage message1 = LitePalCopy.find(WeChatMessage.class, weChatMessage.getId());
         assertEquals("Tom", message1.getFriend());
         assertEquals("Hello nice to meet you", message1.getContent());
         assertNull(message1.getTitle());
@@ -186,7 +186,7 @@ public class SaveTest extends LitePalTestCase {
         weChatMessage.setType(1);
         assertTrue(weChatMessage.save());
         assertTrue(weChatMessage.getId() > 0);
-        WeChatMessage message1 = LitePal.find(WeChatMessage.class, weChatMessage.getId());
+        WeChatMessage message1 = LitePalCopy.find(WeChatMessage.class, weChatMessage.getId());
         assertEquals("Tom", message1.getFriend());
         assertEquals("Hello nice to meet you", message1.getContent());
         assertNull(message1.getTitle());
@@ -201,7 +201,7 @@ public class SaveTest extends LitePalTestCase {
         weiboMessage.setCellphone(cellphone);
         assertTrue(weiboMessage.save());
         assertTrue(weiboMessage.getId() > 0);
-        WeiboMessage message2 = LitePal.find(WeiboMessage.class, weiboMessage.getId(), true);
+        WeiboMessage message2 = LitePalCopy.find(WeiboMessage.class, weiboMessage.getId(), true);
         Cellphone result = message2.getCellphone();
         assertEquals(cellphone.getId(), result.getId());
         assertEquals(cellphone.getBrand(), result.getBrand());
@@ -225,7 +225,7 @@ public class SaveTest extends LitePalTestCase {
         numbers.add(4);
         classroom.setNumbers(numbers);
         classroom.save();
-        Classroom c = LitePal.find(Classroom.class, classroom.get_id());
+        Classroom c = LitePalCopy.find(Classroom.class, classroom.get_id());
         assertEquals("classroom1", c.getName());
         assertEquals(3, c.getNews().size());
         assertEquals(4, c.getNumbers().size());
@@ -243,7 +243,7 @@ public class SaveTest extends LitePalTestCase {
     	idCard.setSerial(Long.MAX_VALUE);
     	idCard.setAddress("abczyx");
     	assertTrue(idCard.save());
-    	IdCard idCardFromDB = LitePal.find(IdCard.class, idCard.getId());
+    	IdCard idCardFromDB = LitePalCopy.find(IdCard.class, idCard.getId());
     	assertEquals(Long.MAX_VALUE, idCardFromDB.getSerial());
 	}
 
@@ -252,13 +252,13 @@ public class SaveTest extends LitePalTestCase {
 		Book book = new Book();
 		book.setBookName("First Line of Android");
 		assertTrue(book.save());
-		Book bookFromDB = LitePal.find(Book.class, book.getId());
+		Book bookFromDB = LitePalCopy.find(Book.class, book.getId());
 		assertNotNull(bookFromDB);
 		assertNull(bookFromDB.getPages()); // pages should be null cause it's Integer type and assign no value.
 
 		book.setPages(123); // assign pages
 		assertTrue(book.save());
-		bookFromDB = LitePal.find(Book.class, book.getId());
+		bookFromDB = LitePalCopy.find(Book.class, book.getId());
 		assertNotNull(bookFromDB);
 		assertNotNull(bookFromDB.getPages()); // now we should be pages value.
 		assertEquals(Integer.valueOf(123), book.getPages());

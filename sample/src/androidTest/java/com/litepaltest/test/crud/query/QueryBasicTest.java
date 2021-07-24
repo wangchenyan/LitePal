@@ -6,7 +6,7 @@ import com.litepaltest.model.Book;
 import com.litepaltest.test.LitePalTestCase;
 
 import org.junit.Test;
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class QueryBasicTest extends LitePalTestCase {
 		book.setPrice(49.99);
 		book.setPublished(false);
 		book.save();
-		Book b = LitePal.find(Book.class, book.getId());
+		Book b = LitePalCopy.find(Book.class, book.getId());
 		assertEquals(book.getId(), b.getId());
 		assertEquals(10.5f, b.getArea());
 		assertEquals("Android First Line", b.getBookName());
@@ -64,7 +64,7 @@ public class QueryBasicTest extends LitePalTestCase {
 		book2.setPrice(35.99);
 		book2.setPublished(false);
 		book2.save();
-		List<Book> bookList = LitePal.findAll(Book.class, book1.getId(), book2.getId());
+		List<Book> bookList = LitePalCopy.findAll(Book.class, book1.getId(), book2.getId());
 		assertEquals(2, bookList.size());
 		for (Book book : bookList) {
 			if (book.getId() == book1.getId()) {
@@ -95,7 +95,7 @@ public class QueryBasicTest extends LitePalTestCase {
     @Test
 	public void testFindAll() {
 		List<Book> expectBooks = getBooks(null, null, null, null, null, null, null);
-		List<Book> realBooks = LitePal.findAll(Book.class);
+		List<Book> realBooks = LitePalCopy.findAll(Book.class);
 		assertEquals(expectBooks.size(), realBooks.size());
 		for (int i = 0; i < expectBooks.size(); i++) {
 			Book expectBook = expectBooks.get(i);
@@ -116,7 +116,7 @@ public class QueryBasicTest extends LitePalTestCase {
 	public void testFindFirst() {
 		List<Book> expectedBooks = getBooks(null, null, null, null, null, null, null);
 		Book expectedFirstBook = expectedBooks.get(0);
-		Book realFirstBook = LitePal.findFirst(Book.class);
+		Book realFirstBook = LitePalCopy.findFirst(Book.class);
 		assertEquals(expectedFirstBook.getId(), realFirstBook.getId());
 		assertEquals(expectedFirstBook.getBookName(), realFirstBook.getBookName());
 		assertEquals(expectedFirstBook.getPages(), realFirstBook.getPages());
@@ -132,7 +132,7 @@ public class QueryBasicTest extends LitePalTestCase {
 	public void testFindLast() {
 		List<Book> expectedBooks = getBooks(null, null, null, null, null, null, null);
 		Book expectedLastBook = expectedBooks.get(expectedBooks.size() - 1);
-		Book realLastBook = LitePal.findLast(Book.class);
+		Book realLastBook = LitePalCopy.findLast(Book.class);
 		assertEquals(expectedLastBook.getId(), realLastBook.getId());
 		assertEquals(expectedLastBook.getBookName(), realLastBook.getBookName());
 		assertEquals(expectedLastBook.getPages(), realLastBook.getPages());
@@ -162,10 +162,10 @@ public class QueryBasicTest extends LitePalTestCase {
         book2.setPublished(false);
         book2.save();
 
-        assertTrue(LitePal.isExist(Book.class, "bookname = ? and pages = ?", "Android Third Line", "556"));
-        assertFalse(LitePal.isExist(Book.class, "bookname = ? and pages = ?", "Android Third Lines", "556"));
-        assertTrue(LitePal.isExist(Book.class, "bookname = ? and pages = ?", "Android Fourth Line", "818"));
-        assertFalse(LitePal.isExist(Book.class, "bookname = ? and pages = ?", "Android Fourth Line", "813"));
+        assertTrue(LitePalCopy.isExist(Book.class, "bookname = ? and pages = ?", "Android Third Line", "556"));
+        assertFalse(LitePalCopy.isExist(Book.class, "bookname = ? and pages = ?", "Android Third Lines", "556"));
+        assertTrue(LitePalCopy.isExist(Book.class, "bookname = ? and pages = ?", "Android Fourth Line", "818"));
+        assertFalse(LitePalCopy.isExist(Book.class, "bookname = ? and pages = ?", "Android Fourth Line", "813"));
     }
 
 }

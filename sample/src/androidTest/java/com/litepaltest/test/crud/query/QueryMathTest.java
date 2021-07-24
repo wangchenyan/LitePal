@@ -7,8 +7,8 @@ import com.litepaltest.model.Student;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.litepal.LitePal;
-import org.litepal.util.DBUtility;
+import org.litepal.copy.LitePalCopy;
+import org.litepal.copy.util.DBUtility;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
@@ -26,23 +26,23 @@ public class QueryMathTest {
 
     @Test
     public void testCount() {
-		int result = LitePal.count(Student.class);
+		int result = LitePalCopy.count(Student.class);
 		int realResult = -100;
-		Cursor cursor = LitePal.findBySQL("select count(1) from " + studentTable);
+		Cursor cursor = LitePalCopy.findBySQL("select count(1) from " + studentTable);
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}
 		cursor.close();
 		assertEquals(realResult, result);
-		result = LitePal.where("id > ?", "99").count(studentTable);
-		cursor = LitePal.findBySQL("select count(1) from " + studentTable + " where id > ?", "99");
+		result = LitePalCopy.where("id > ?", "99").count(studentTable);
+		cursor = LitePalCopy.findBySQL("select count(1) from " + studentTable + " where id > ?", "99");
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}
 		cursor.close();
 		assertEquals(realResult, result);
 		try {
-            LitePal.count("nosuchtable");
+            LitePalCopy.count("nosuchtable");
 			fail();
 		} catch (Exception ignored) {
 		}
@@ -50,23 +50,23 @@ public class QueryMathTest {
 
 	@Test
 	public void testAverage() {
-		double result = LitePal.average(Student.class, "age");
+		double result = LitePalCopy.average(Student.class, "age");
 		double realResult = -100;
-		Cursor cursor = LitePal.findBySQL("select avg(age) from " + studentTable);
+		Cursor cursor = LitePalCopy.findBySQL("select avg(age) from " + studentTable);
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getDouble(0);
 		}
 		cursor.close();
 		assertEquals(realResult, result);
-		result = LitePal.where("id > ?", "99").average(studentTable, "age");
-		cursor = LitePal.findBySQL("select avg(age) from " + studentTable + " where id > ?", "99");
+		result = LitePalCopy.where("id > ?", "99").average(studentTable, "age");
+		cursor = LitePalCopy.findBySQL("select avg(age) from " + studentTable + " where id > ?", "99");
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getDouble(0);
 		}
 		cursor.close();
 		assertEquals(realResult, result);
 		try {
-            LitePal.average(Student.class, "nosuchcolumn");
+            LitePalCopy.average(Student.class, "nosuchcolumn");
 			fail();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,16 +75,16 @@ public class QueryMathTest {
 
 	@Test
 	public void testMax() {
-		int result = LitePal.max(Student.class, "age", Integer.TYPE);
+		int result = LitePalCopy.max(Student.class, "age", Integer.TYPE);
 		int realResult = -100;
-		Cursor cursor = LitePal.findBySQL("select max(age) from " + studentTable);
+		Cursor cursor = LitePalCopy.findBySQL("select max(age) from " + studentTable);
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}
 		cursor.close();
 		assertEquals(realResult, result);
-		result = LitePal.where("age < ?", "20").max(studentTable, "age", Integer.TYPE);
-		cursor = LitePal.findBySQL("select max(age) from " + studentTable + " where age < ?", "20");
+		result = LitePalCopy.where("age < ?", "20").max(studentTable, "age", Integer.TYPE);
+		cursor = LitePalCopy.findBySQL("select max(age) from " + studentTable + " where age < ?", "20");
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}
@@ -94,16 +94,16 @@ public class QueryMathTest {
 
 	@Test
 	public void testMin() {
-		int result = LitePal.min(Student.class, "age", Integer.TYPE);
+		int result = LitePalCopy.min(Student.class, "age", Integer.TYPE);
 		int realResult = -100;
-		Cursor cursor = LitePal.findBySQL("select min(age) from " + studentTable);
+		Cursor cursor = LitePalCopy.findBySQL("select min(age) from " + studentTable);
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}
 		cursor.close();
 		assertEquals(realResult, result);
-		result = LitePal.where("age > ?", "10").min(studentTable, "age", Integer.TYPE);
-		cursor = LitePal.findBySQL("select min(age) from " + studentTable + " where age > ?", "10");
+		result = LitePalCopy.where("age > ?", "10").min(studentTable, "age", Integer.TYPE);
+		cursor = LitePalCopy.findBySQL("select min(age) from " + studentTable + " where age > ?", "10");
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}
@@ -113,16 +113,16 @@ public class QueryMathTest {
 
 	@Test
 	public void testSum() {
-		int result = LitePal.sum(Student.class, "age", Integer.TYPE);
+		int result = LitePalCopy.sum(Student.class, "age", Integer.TYPE);
 		int realResult = -100;
-		Cursor cursor = LitePal.findBySQL("select sum(age) from " + studentTable);
+		Cursor cursor = LitePalCopy.findBySQL("select sum(age) from " + studentTable);
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}
 		cursor.close();
 		assertEquals(realResult, result);
-		result = LitePal.where("age > ?", "15").sum(studentTable, "age", Integer.TYPE);
-		cursor = LitePal.findBySQL("select sum(age) from " + studentTable + " where age > ?", "15");
+		result = LitePalCopy.where("age > ?", "15").sum(studentTable, "age", Integer.TYPE);
+		cursor = LitePalCopy.findBySQL("select sum(age) from " + studentTable + " where age > ?", "15");
 		if (cursor.moveToFirst()) {
 			realResult = cursor.getInt(0);
 		}

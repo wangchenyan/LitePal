@@ -3,7 +3,7 @@ package com.litepaltest.test.util;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Test;
-import org.litepal.util.BaseUtility;
+import org.litepal.copy.util.BaseUtility;
 
 import com.litepaltest.test.LitePalTestCase;
 

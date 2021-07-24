@@ -12,7 +12,7 @@ import com.litepaltest.test.LitePalTestCase;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.litepal.LitePal;
+import org.litepal.copy.LitePalCopy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,32 +25,32 @@ public class TransactionTest extends LitePalTestCase {
 
     @Test
     public void testTransactionForSave() {
-        LitePal.beginTransaction();
+        LitePalCopy.beginTransaction();
         Book book = new Book();
         try {
             book.setBookName("First Line of Android");
             book.setPages(700);
             Assert.assertTrue(book.save());
-            Book bookFromDb = LitePal.find(Book.class, book.getId());
+            Book bookFromDb = LitePalCopy.find(Book.class, book.getId());
             Assert.assertEquals("First Line of Android", bookFromDb.getBookName());
             Assert.assertEquals(700L, bookFromDb.getPages().intValue());
             if (true) {
                 throw new NullPointerException("Throw a exception to fail the transaction.");
             }
-            LitePal.setTransactionSuccessful();
+            LitePalCopy.setTransactionSuccessful();
         } catch (Exception e) {
             // do nothing
         } finally {
-            LitePal.endTransaction();
+            LitePalCopy.endTransaction();
         }
         Assert.assertTrue(book.isSaved());
-        Book bookFromDb = LitePal.find(Book.class, book.getId());
+        Book bookFromDb = LitePalCopy.find(Book.class, book.getId());
         Assert.assertNull(bookFromDb);
     }
 
     @Test
     public void testTransactionForSaveAll() {
-        LitePal.beginTransaction();
+        LitePalCopy.beginTransaction();
         String serial = UUID.randomUUID().toString();
         WeiboMessage weiboMessage = new WeiboMessage();
         try {
@@ -64,17 +64,17 @@ public class TransactionTest extends LitePalTestCase {
                 cellphone.getMessages().add(weiboMessage);
                 cellphones.add(cellphone);
             }
-            boolean saveAllResult = LitePal.saveAll(cellphones);
+            boolean saveAllResult = LitePalCopy.saveAll(cellphones);
             if (saveResult && saveAllResult) {
-                LitePal.setTransactionSuccessful();
+                LitePalCopy.setTransactionSuccessful();
             }
         } finally {
-            LitePal.endTransaction();
+            LitePalCopy.endTransaction();
         }
         Assert.assertTrue(weiboMessage.isSaved());
-        WeiboMessage messageFromDb = LitePal.find(WeiboMessage.class, weiboMessage.getId());
+        WeiboMessage messageFromDb = LitePalCopy.find(WeiboMessage.class, weiboMessage.getId());
         Assert.assertNull(messageFromDb);
-        List<Cellphone> list = LitePal.where("serial like ?", serial + "%").find(Cellphone.class);
+        List<Cellphone> list = LitePalCopy.where("serial like ?", serial + "%").find(Cellphone.class);
         assertTrue(list.isEmpty());
     }
 
@@ -86,16 +86,16 @@ public class TransactionTest extends LitePalTestCase {
         teacher.setAge(23);
         teacher.setSex(false);
         Assert.assertTrue(teacher.save());
-        LitePal.beginTransaction();
+        LitePalCopy.beginTransaction();
         ContentValues values = new ContentValues();
         values.put("TeachYears", 13);
-        int rows = LitePal.update(Teacher.class, values, teacher.getId());
+        int rows = LitePalCopy.update(Teacher.class, values, teacher.getId());
         Assert.assertEquals(1, rows);
-        Teacher teacherFromDb = LitePal.find(Teacher.class, teacher.getId());
+        Teacher teacherFromDb = LitePalCopy.find(Teacher.class, teacher.getId());
         Assert.assertEquals(13, teacherFromDb.getTeachYears());
         // not set transaction successful
-        LitePal.endTransaction();
-        teacherFromDb = LitePal.find(Teacher.class, teacher.getId());
+        LitePalCopy.endTransaction();
+        teacherFromDb = LitePalCopy.find(Teacher.class, teacher.getId());
         Assert.assertEquals(3, teacherFromDb.getTeachYears());
     }
 
@@ -106,14 +106,14 @@ public class TransactionTest extends LitePalTestCase {
         tony.setAge(23);
         tony.save();
         int studentId = tony.getId();
-        LitePal.beginTransaction();
+        LitePalCopy.beginTransaction();
         int rowsAffected = tony.delete();
         Assert.assertEquals(1, rowsAffected);
-        Student studentFromDb = LitePal.find(Student.class, studentId);
+        Student studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertNull(studentFromDb);
         // not set transaction successful
-        LitePal.endTransaction();
-        studentFromDb = LitePal.find(Student.class, studentId);
+        LitePalCopy.endTransaction();
+        studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertNotNull(studentFromDb);
         Assert.assertEquals("Tony", studentFromDb.getName());
         Assert.assertEquals(23, studentFromDb.getAge());
@@ -121,13 +121,13 @@ public class TransactionTest extends LitePalTestCase {
 
     @Test
     public void testTransactionForCRUD() {
-        LitePal.beginTransaction();
+        LitePalCopy.beginTransaction();
         Student tony = new Student();
         tony.setName("Tony");
         tony.setAge(23);
         tony.save();
         int studentId = tony.getId();
-        Student studentFromDb = LitePal.find(Student.class, studentId);
+        Student studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertNotNull(studentFromDb);
         Assert.assertEquals("Tony", studentFromDb.getName());
         Assert.assertEquals(23, studentFromDb.getAge());
@@ -135,30 +135,30 @@ public class TransactionTest extends LitePalTestCase {
         updateModel.setAge(25);
         int rowsAffected = updateModel.update(studentId);
         Assert.assertEquals(1, rowsAffected);
-        studentFromDb = LitePal.find(Student.class, studentId);
+        studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertEquals(25, studentFromDb.getAge());
         rowsAffected = tony.delete();
         Assert.assertEquals(1, rowsAffected);
-        studentFromDb = LitePal.find(Student.class, studentId);
+        studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertNull(studentFromDb);
         Assert.assertTrue(tony.save());
-        studentFromDb = LitePal.find(Student.class, tony.getId());
+        studentFromDb = LitePalCopy.find(Student.class, tony.getId());
         Assert.assertNotNull(studentFromDb);
         // not set transaction successful
-        LitePal.endTransaction();
-        studentFromDb = LitePal.find(Student.class, tony.getId());
+        LitePalCopy.endTransaction();
+        studentFromDb = LitePalCopy.find(Student.class, tony.getId());
         Assert.assertNull(studentFromDb);
     }
 
     @Test
     public void testTransactionSuccessfulForCRUD() {
-        LitePal.beginTransaction();
+        LitePalCopy.beginTransaction();
         Student tony = new Student();
         tony.setName("Tony");
         tony.setAge(23);
         tony.save();
         int studentId = tony.getId();
-        Student studentFromDb = LitePal.find(Student.class, studentId);
+        Student studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertNotNull(studentFromDb);
         Assert.assertEquals("Tony", studentFromDb.getName());
         Assert.assertEquals(23, studentFromDb.getAge());
@@ -166,18 +166,18 @@ public class TransactionTest extends LitePalTestCase {
         updateModel.setAge(25);
         int rowsAffected = updateModel.update(studentId);
         Assert.assertEquals(1, rowsAffected);
-        studentFromDb = LitePal.find(Student.class, studentId);
+        studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertEquals(25, studentFromDb.getAge());
         rowsAffected = tony.delete();
         Assert.assertEquals(1, rowsAffected);
-        studentFromDb = LitePal.find(Student.class, studentId);
+        studentFromDb = LitePalCopy.find(Student.class, studentId);
         Assert.assertNull(studentFromDb);
         Assert.assertTrue(tony.save());
-        studentFromDb = LitePal.find(Student.class, tony.getId());
+        studentFromDb = LitePalCopy.find(Student.class, tony.getId());
         Assert.assertNotNull(studentFromDb);
-        LitePal.setTransactionSuccessful();
-        LitePal.endTransaction();
-        studentFromDb = LitePal.find(Student.class, tony.getId());
+        LitePalCopy.setTransactionSuccessful();
+        LitePalCopy.endTransaction();
+        studentFromDb = LitePalCopy.find(Student.class, tony.getId());
         Assert.assertNotNull(studentFromDb);
         Assert.assertEquals("Tony", studentFromDb.getName());
         Assert.assertEquals(23, studentFromDb.getAge());
