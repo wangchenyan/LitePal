@@ -27,7 +27,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-apply plugin: 'com.github.panpf.bintray-publish'
+//apply plugin: 'com.github.panpf.bintray-publish'
 
 allprojects {
     tasks.withType(Javadoc) {
@@ -36,20 +36,20 @@ allprojects {
     }
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
-    }
-}
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
+//    }
+//}
 
-publish {
-    userOrg = 'sinyu890807'
-    groupId = 'org.litepal.guolindev'
-    artifactId = 'core'
-    publishVersion = '3.2.3'
-    desc = 'An Android library that allows developers to use SQLite database extremely easy'
-    website = 'https://github.com/LitePalFramework/LitePal'
-}
+//publish {
+//    userOrg = 'sinyu890807'
+//    groupId = 'org.litepal.guolindev'
+//    artifactId = 'core'
+//    publishVersion = '3.2.3'
+//    desc = 'An Android library that allows developers to use SQLite database extremely easy'
+//    website = 'https://github.com/LitePalFramework/LitePal'
+//}
